@@ -1,4 +1,3 @@
-// pages/ProcureDetail/ProcureDetail.ts
 import { ApiGet,ApiPost } from '../../utils/request'
 Page({
 
@@ -87,7 +86,7 @@ Page({
     let table = this.data.table;
     let that=this;
     wx.navigateTo({
-      url: '/pages/ProcureInspection/ProcureInspection',
+      url: '/pages/InventoryCheckCode/InventoryCheckCode',
       events: {
         // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
         acceptDataFromOpenedPage: function (data: any) {
@@ -127,7 +126,7 @@ Page({
       title:'保存中'
     })
     let that=this
-    ApiPost('/flcProcureDetail/inspection',that.data.table)
+    ApiPost('/flcInventoryCheckDetail/update',that.data.table)
     .then((res:any)=>{
       wx.hideLoading()
       if(res.code==200){

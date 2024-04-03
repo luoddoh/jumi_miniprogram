@@ -63,10 +63,14 @@ Component({
       })
     },
     login(){
+      wx.showLoading({
+        title:'登录中'
+      })
       let that=this;
       let userInfo=this.data.userInfo
       console.log(userInfo)
       LoginApi(userInfo.account,userInfo.password).then((res:any)=>{
+        wx.hideLoading()
         if(res.code==200){
           if(that.data.save_info){
             that.save_userinfo();

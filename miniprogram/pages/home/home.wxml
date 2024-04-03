@@ -19,7 +19,7 @@
     <view>仓库库存，定期清点</view>
     <view>支持手机扫描点数</view>
   </view>
-  <view class="bolckBox">
+  <view class="bolckBox" bind:tap="ToInventoryOut">
     <view>
       <van-icon class="icon" name="share" />
     </view>

@@ -5,7 +5,7 @@
   <view class="top_block">
     <view class="li_row top_row">
       <view class="form_item">
-        <view class="cell_label">采购单号：</view>
+        <view class="cell_label">盘点单号：</view>
         <view class="cell_value">{{detailInfo.docNumber}}</view>
       </view>
     </view>

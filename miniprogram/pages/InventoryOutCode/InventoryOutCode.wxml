@@ -1,2 +1,32 @@
-<!--pages/InventoryOutCode/InventoryOutCode.wxml-->
-<text>pages/InventoryOutCode/InventoryOutCode.wxml</text>
+<view class="page">
+  <camera  mode="scanCode" resolution="high" class="camera_block" bindscancode="successScan"></camera>
+  <view>
+    <view class="row head">
+      <view class="cell cell_1">序</view>
+      <view class="cell cell_2">图片</view>
+      <view class="cell cell_3">商品名称</view>
+      <view class="cell cell_4">商品规格</view>
+      <view class="cell cell_5">数量</view>
+    </view>
+    <view class="row" wx:for="{{table}}" wx:key="index">
+      <view class="cell cell_1">{{index+1}}</view>
+      <view class="cell cell_2">
+        <image src="{{item.coverImage}}" style="width: 60rpx;height: 60rpx;"></image>
+      </view>
+      <view class="cell cell_3">{{item.goodsName}}</view>
+      <view class="cell cell_4">
+        <label wx:for="{{item.speValueList}}" wx:for-index="i" wx:key="i"  wx:for-item="spe">
+                  {{spe.speValue}}{{i==item.speValueList.length-1?'':'/'}}
+                </label>
+      </view>
+      <view class="cell cell_5">{{item.scanCode.length}}</view>
+    </view>
+    <view class="row" wx:for="{{(8-table.length)}}">
+    </view>
+  </view>
+  <view class="button_block" >
+    <view class="button" bind:tap="back"><van-icon name="revoke" />返回</view>
+    <view class="button" bind:tap="clearData"><van-icon name="delete-o" />清空</view>
+    <view class="button" bind:tap="ok"><van-icon name="completed-o" />确定</view>
+  </view>
+</view>
