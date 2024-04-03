@@ -45,7 +45,7 @@
       </view>
       <view class="form_item">
         <view class="cell_label">审核时间：</view>
-        <view class="cell_value">{{formatDate.timeFormat(detailInfo.auditTime,'yyyy-MM-dd')}}</view>
+        <view class="cell_value">{{formatDate.timeFormat(detailInfo.reviewerTime,'yyyy-MM-dd')}}</view>
       </view>
     </view>
     <view class="li_row">
