@@ -1,0 +1,30 @@
+<!--pages/home/home.wxml-->
+<view class="head_top_box">
+  库存管理系统
+</view>
+<van-row>
+  <view class="bolckBox" bind:tap="ToProcure">
+    <view>
+      <van-icon class="icon" name="shopping-cart" />
+    </view>
+    <view class="title">采购验货</view>
+    <view>工厂来货，验收入库</view>
+    <view>支持手机扫描入库</view>
+  </view>
+  <view class="bolckBox" bind:tap="ToInventoryCheck">
+    <view>
+      <van-icon class="icon" name="records" />
+    </view>
+    <view class="title">库存盘点</view>
+    <view>仓库库存，定期清点</view>
+    <view>支持手机扫描点数</view>
+  </view>
+  <view class="bolckBox">
+    <view>
+      <van-icon class="icon" name="share" />
+    </view>
+    <view class="title">扫码出库</view>
+    <view>订单备货，备货出库</view>
+    <view>支持手机扫描出库</view>
+  </view>
+</van-row>

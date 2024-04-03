@@ -1,0 +1,118 @@
+<!--pages/InventoryCheckDetail/InventoryCheckDetail.wxml-->
+<wxs module="formatDate" src="../../utils/formatDatew.wxs"></wxs>
+<view class="page">
+  
+  <view class="top_block">
+    <view class="li_row top_row">
+      <view class="form_item">
+        <view class="cell_label">采购单号：</view>
+        <view class="cell_value">{{detailInfo.docNumber}}</view>
+      </view>
+    </view>
+    <view class="li_row">
+      <view class="form_item">
+        <view class="cell_label">是否审核：</view>
+        <view class="cell_value">
+          <label wx:if="{{detailInfo.state>=200}}">已审核</label>
+          <label wx:if="{{detailInfo.state==100}}">未审核</label>
+        </view>
+      </view>
+    </view>
+    <view class="li_row">
+      <view class="form_item">
+        <view class="cell_label">制单人：</view>
+        <view class="cell_value">{{detailInfo.createUserName}}</view>
+      </view>
+      <view class="form_item">
+        <view class="cell_label">制单时间：</view>
+        <view class="cell_value">{{formatDate.timeFormat(detailInfo.createTime,'yyyy-MM-dd')}}</view>
+      </view>
+    </view>
+    <view class="li_row">
+      <view class="form_item">
+        <view class="cell_label">操作人：</view>
+        <view class="cell_value">{{detailInfo.checkPeople}}</view>
+      </view>
+      <view class="form_item">
+        <view class="cell_label">操作时间：</view>
+        <view class="cell_value">{{formatDate.timeFormat(detailInfo.checkTime,'yyyy-MM-dd')}}</view>
+      </view>
+    </view>
+    <view class="li_row">
+      <view class="form_item">
+        <view class="cell_label">审核人：</view>
+        <view class="cell_value">{{detailInfo.reviewer?detailInfo.reviewer:''}}</view>
+      </view>
+      <view class="form_item">
+        <view class="cell_label">审核时间：</view>
+        <view class="cell_value">{{formatDate.timeFormat(detailInfo.auditTime,'yyyy-MM-dd')}}</view>
+      </view>
+    </view>
+    <view class="li_row">
+      <view class="form_item">
+        <view class="cell_label">订单备注：</view>
+        <view class="cell_value">{{detailInfo.remark==null?'':detailInfo.remark}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="content_block" >
+    <scroll-view scroll-y="true" style="height: 100%;">
+      <scroll-view scroll-x="true" enhanced="true" >
+        <view class="table">
+          <view class="table_row head">
+            <view class="cell_1 cell">图片</view>
+            <view class="cell_2 cell">商品名称</view>
+            <view class="cell_3 cell">商品规格</view>
+            <view class="cell_4 cell">单位</view>
+            <view class="cell_5 cell">库存量</view>
+            <view class="cell_6 cell">成本价</view>
+            <view class="cell_7 cell">盘点数</view>
+            <view class="cell_8 cell">盘点金额</view>
+            <view class="cell_9 cell">差异数</view>
+            <view class="cell_9 cell">差金额</view>
+            <view class="cell_10 cell">备注</view>
+          </view>
+          <view wx:for="{{table}}" wx:key="index" wx:for-item="row" class="table_row">
+            <view class="cell_1 cell">
+              <image class="skuImage" src="{{row.skuImage}}"></image>
+            </view>
+            <view class="cell_2 cell">{{row.goodsName}}</view>
+            <view class="cell_3 cell">
+                <label wx:for="{{row.speValueList}}" wx:for-index="i" wx:key="i" >
+                  {{item.speValue}}{{i==row.speValueList.length-1?'':'/'}}
+                </label>
+            </view>
+            <view class="cell_4 cell">{{row.unitName}}</view>
+            <view class="cell_5 cell">{{row.inventoryNum}}</view>
+            <view class="cell_6 cell">{{row.price}}</view>
+            <view class="cell_7 cell">{{row.checkNum}}</view>
+            <view class="cell_8 cell">{{row.totalAmount}}</view>
+            <view class="cell_9 cell">{{row.differenceNum}}</view>
+            <view class="cell_9 cell">{{row.differencePrice}}</view>
+            <view class="cell_10 cell">{{row.remark}}</view>
+          </view>
+          <view class="table_row">
+            <view class="cell_1 cell"></view>
+            <view class="cell_2 cell">合计：</view>
+            <view class="cell_3 cell"></view>
+            <view class="cell_4 cell"></view>
+            <view class="cell_5 cell">{{Total.inventoryNum}}</view>
+            <view class="cell_6 cell"></view>
+            <view class="cell_7 cell">{{Total.checkNum}}</view>
+            <view class="cell_8 cell">{{Total.totalAmount}}</view>
+            <view class="cell_9 cell">{{Total.differenceNum}}</view>
+            <view class="cell_9 cell">{{Total.differencePrice}}</view>
+            <view class="cell_10 cell"></view>
+          </view>
+        </view>
+
+      </scroll-view>
+    </scroll-view>
+
+  </view>
+  <view class="button_block" >
+    <view class="button" bind:tap="back"><van-icon name="revoke" />返回</view>
+    <view class="button" bind:tap="save" ><van-icon name="completed-o" />保存</view>
+    <view class="button"  bind:tap="toInspection"><van-icon name="scan"/>去验货</view>
+  </view>
+</view>

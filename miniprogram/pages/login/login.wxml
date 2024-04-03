@@ -1,0 +1,31 @@
+<!--index.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <view class="titleBox">
+      库存管理系统
+    </view>
+    <view class="userinfo">
+      <view class="inputRow">
+        <image class="avatar" src="../../wwwroot/img/account.png"></image>
+        <view class="nickname-wrapper">
+          <van-field model:value="{{ userInfo.account }}"  data-name="account" placeholder="请输入登录账号" border="{{ false }}" bind:change="onInputChange" />
+          <!-- <input type="text" class="nickname-input" data-name="account" placeholder="请输入登录账号" bind:change="onInputChange" /> -->
+        </view>
+      </view>
+      <view class="inputRow">
+        <image class="avatar" src="../../wwwroot/img/password.png"></image>
+        <view class="nickname-wrapper">
+          <van-field value="{{ userInfo.password }}"  data-name="password" type="password" placeholder="请输入登录密码" bind:change="onInputChange"  border="{{ false }}" />
+        </view>
+      </view>
+      <view class="inputRow">
+        <van-checkbox shape="square" value="{{ save_info }}" bind:change="onSaveChange">记住密码</van-checkbox>
+      </view>
+    </view>
+    <view class="usermotto">
+      <view class="bottor_element" bind:tap="login">
+        立即登录
+      </view>
+    </view>
+  </view>
+</scroll-view>

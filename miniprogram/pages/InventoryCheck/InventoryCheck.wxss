@@ -1,0 +1,115 @@
+/* pages/InventoryCheck/InventoryCheck.wxss */
+.page {
+  padding: 8rpx;
+}
+
+.top_block {
+  background-color: rgb(242, 242, 242);
+  border-radius: 8rpx;
+  padding: 10rpx;
+}
+
+.checkDate_block {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: rgb(224, 224, 224);
+  border-radius: 8rpx;
+  margin: 0 auto;
+  padding: 6rpx 0rpx;
+}
+
+.radio_block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 26rpx;
+  padding: 10rpx 0;
+}
+
+.input_block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search_button {
+  width: 160rpx;
+  height: 60rpx;
+  border-radius: 8rpx;
+  background-color: rgb(0, 10, 123);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.van-cell{
+  padding: 6rpx !important;
+  background-color:rgb(224, 224, 224) !important;
+  border-radius: 8rpx;
+  color: black !important;
+}
+van-field{
+  width: 540rpx;
+}
+.content_block{
+  margin-top: 10rpx;
+  padding: 10rpx;
+  background-color: rgb(242, 242, 242);
+  border-radius: 8rpx;
+  height: 1200rpx;
+}
+.item_block{
+  border-bottom: 4rpx solid rgba(173, 173, 173, 0.616);
+  margin-top: 30rpx;
+}
+.cell_value{
+  display: inline-block;
+ min-width: 180rpx;
+}
+.cell_label{
+ width: 160rpx;
+ height: 42rpx;
+ text-align: justify;
+ text-justify: distribute-all-lines;
+ text-align-last: justify;
+}
+.cell_label::after{
+  content: "";
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  line-height: 0;
+}
+.li_row{
+  margin-bottom: 10rpx;
+  display: flex;
+    align-items: center;
+}
+.top_row{
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.form_item{
+  display: flex;
+    align-items: center;
+}
+.state_100{
+  color: white;
+  background-color: gray;
+  border-radius: 8rpx;
+  padding: 6rpx 12rpx;
+}
+.state_101{
+  color: white;
+  background-color: rgb(7, 193, 96);
+  border-radius: 8rpx;
+  padding: 6rpx 12rpx;
+}
+.state_102{
+  color: white;
+  background-color: rgb(129, 127, 38);
+  border-radius: 8rpx;
+  padding: 6rpx 12rpx;
+}

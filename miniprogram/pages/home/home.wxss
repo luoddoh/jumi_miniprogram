@@ -1,0 +1,38 @@
+/* pages/home/home.wxss */
+.head_top_box{
+  margin: 90rpx auto;
+  width: 660rpx;
+  text-align: center;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 42rpx;
+  border-bottom: 4rpx solid gray;
+}
+.bolckBox{
+  width: 500rpx;
+  min-height: 300rpx;
+  margin: 100rpx auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 12rpx;
+}
+.bolckBox:first-child{
+  background-color: rgb(7,193,96);
+}
+.bolckBox:nth-child(2){
+  background-color: rgb(127,179,55);
+}
+.bolckBox:nth-child(3){
+  background-color: rgb(203,164,63);
+}
+.bolckBox .icon{
+  font-size: 100rpx;
+  font-weight: bold;
+}
+.bolckBox .title{
+  font-size: 50rpx;
+  font-weight: bold;
+}

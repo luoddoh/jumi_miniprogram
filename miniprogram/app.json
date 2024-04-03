@@ -1,0 +1,31 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/home/home",
+    "pages/logs/logs",
+    "pages/Procure/Procure",
+    "pages/ProcureDetail/ProcureDetail",
+    "pages/ProcureInspection/ProcureInspection",
+    "pages/InventoryCheck/InventoryCheck",
+    "pages/InventoryCheckDetail/InventoryCheckDetail",
+    "pages/InventoryCheckCode/InventoryCheckCode",
+    "pages/InventoryOut/InventoryOut",
+    "pages/InventoryOutDetail/InventoryOutDetail",
+    "pages/InventoryOutCode/InventoryOutCode"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-popup": "@vant/weapp/popup/index"
+  }
+}

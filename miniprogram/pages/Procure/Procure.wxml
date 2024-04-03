@@ -1,0 +1,79 @@
+<!--pages/Procure/Procure.wxml-->
+<view class="page">
+  <wxs module="formatDate" src="../../utils/formatDatew.wxs"></wxs>
+  <view class="top_block">
+    <view class="checkDate_block" >
+      <van-icon name="underway-o" />
+      <view bind:tap="checkDate" data-name="oringTime">{{oringTime}}</view>-
+      <view bind:tap="checkDate" data-name="endTime">{{endTime}}</view>
+    </view>
+    <view class="radio_block">
+      <view>查询状态：</view>
+      <van-radio-group direction="horizontal" value="{{ radio }}" bind:change="onChange">
+        <van-radio name="0" icon-size="26rpx">全部</van-radio>
+        <van-radio name="400" icon-size="26rpx">已验货</van-radio>
+        <van-radio name="300" icon-size="26rpx">部分验货</van-radio>
+        <van-radio name="200" icon-size="26rpx">未验货</van-radio>
+      </van-radio-group>
+    </view>
+    <view class="input_block">
+      <van-field value="{{ search }}" size="small" placeholder="请输入要查询的订单号" border="{{ false }}" bind:change="onChange" />
+      <view class="search_button" bind:tap="search">
+        <van-icon name="search" />
+        <view>查询</view>
+      </view>
+    </view>
+  </view>
+  <view class="content_block" wx:if="{{!empty}}">
+    <scroll-view scroll-y="true" bindscrolltolower="tolower" style="height: 100%;">
+      <view wx:for="{{procureDate}}" wx:key="index" data-id="{{item.id}}" bind:tap="toDetail" class="item_block">
+        <view class="li_row top_row">
+          <view class="form_item">
+            <view class="cell_label">采购单号：</view>
+            <view class="cell_value">{{item.docNumber}}</view>
+          </view>
+          <view>
+            <view wx:if="{{item.state==200}}" class="state_100">未验货</view>
+            <view wx:if="{{item.state==400}}" class="state_101">已验货</view>
+            <view wx:if="{{item.state==300}}" class="state_102">部分验货</view>
+          </view>
+        </view>
+        <view class="li_row">
+          <view class="form_item">
+            <view class="cell_label">采购数量：</view>
+            <view class="cell_value">{{item.totalNumber}}</view>
+          </view>
+          <view class="form_item">
+            <view class="cell_label">采购金额：</view>
+            <view class="cell_value">{{item.totalAmount}}</view>
+          </view>
+        </view>
+        <view class="li_row">
+          <view class="form_item">
+            <view class="cell_label">制单人：</view>
+            <view class="cell_value">{{item.createUserName}}</view>
+          </view>
+          <view class="form_item">
+            <view class="cell_label">制单时间：</view>
+            <view class="cell_value">{{formatDate.timeFormat(item.createTime,'yyyy-MM-dd')}}</view>
+          </view>
+        </view>
+        <view class="li_row">
+          <view class="form_item">
+            <view class="cell_label">操作人：</view>
+            <view class="cell_value">{{item.purchaserRealName}}</view>
+          </view>
+          <view class="form_item">
+            <view class="cell_label">操作时间：</view>
+            <view class="cell_value">{{formatDate.timeFormat(item.procurementTime,'yyyy-MM-dd')}}</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+  </view>
+  <van-empty wx:if="{{empty}}" image="search" description="暂无数据" />
+  <van-popup show="{{ DateShow }}" round position="bottom" custom-style="height: 40%" bind:close="onClose">
+    <van-datetime-picker type="datetime" value="{{ currentDate }}" bind:input="onInput" bind:confirm="cancel_picker" bind:cancel="cancel_picker" />
+  </van-popup>
+</view>
