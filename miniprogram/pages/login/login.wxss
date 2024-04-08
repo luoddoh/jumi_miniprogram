@@ -3,23 +3,37 @@ page {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  
 }
-
+.page{
+  padding: 80rpx 10rpx 0 ;
+}
 .titleBox {
   color: rgb(89, 27, 183);
   padding-bottom: 20rpx;
   font-size: 48rpx;
   width: 600rpx;
   text-align: center;
-  margin-top: 200rpx;
+  margin-bottom: 80rpx;
   border-bottom: 4rpx solid rgb(89, 27, 183);
 }
 
 .scrollarea {
   flex: 1;
   overflow-y: hidden;
+  
 }
-
+.container{
+  background-color: rgba(242, 242, 242);
+  border-radius: 8rpx;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0 320rpx;
+  box-sizing: border-box;
+}
 .userinfo {
   display: flex;
   align-items: center;

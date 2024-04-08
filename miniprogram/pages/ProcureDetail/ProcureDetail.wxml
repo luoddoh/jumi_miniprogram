@@ -81,7 +81,7 @@
           </view>
           <view wx:for="{{table}}" wx:key="index" wx:for-item="row" class="table_row">
             <view class="cell_1 cell">
-              <image class="skuImage" src="{{row.skuImage}}"></image>
+              <image class="skuImage" src="{{row.skuImage}}" ></image>
             </view>
             <view class="cell_2 cell">{{row.goodsName}}</view>
             <view class="cell_3 cell">

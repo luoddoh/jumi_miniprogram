@@ -34,8 +34,11 @@ Page({
           title: '处理中'
         })
         setTimeout(async() => {
-          let code_row: any = this.getRowInfo(code)
-          if (code_row) {
+          let code_row: any =''
+          await this.getRowInfo(code).then(res=>{
+            code_row=res
+          })
+          if (code_row!='') {
             if (table.length > 0) {
               let index=-1;
               for (let i = 0; i < table.length; i++) {

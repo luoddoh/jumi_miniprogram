@@ -92,6 +92,7 @@ Page({
         acceptDataFromOpenedPage: function (data: any) {
           let table=data.data;
           that.daohuo(table)
+          that.RefreshTotal();
         },
       },
       success: function (res) {
@@ -109,7 +110,7 @@ Page({
     let oring=this.data.table;
     oring.forEach((row:any)=>{
       data.forEach((ele:any)=>{
-        if(row.id==ele.id){
+        if(row.skuId==ele.skuId){
           row.checkNum=ele.scanCode.length
           row.ok_totalAmount=row.checkNum*row.price
           row.differenceNum=row.checkNum-row.inventoryNum

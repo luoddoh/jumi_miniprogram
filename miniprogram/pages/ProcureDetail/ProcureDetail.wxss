@@ -44,7 +44,7 @@
   padding: 10rpx;
   background-color: rgb(242, 242, 242);
   border-radius: 8rpx;
-  height: 960rpx;
+  height: 920rpx;
 }
 .table .table_row{
   display: flex;
@@ -53,10 +53,7 @@
   justify-content: space-between;
   min-width: 1700rpx;
 }
-.table .head .cell{
-  background-color: rgb(139, 139, 139) !important;
-  font-weight: bold;
-}
+
 .skuImage{
   width: 100rpx;
   height: 100rpx;

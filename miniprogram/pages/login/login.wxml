@@ -1,5 +1,6 @@
 <!--index.wxml-->
-<scroll-view class="scrollarea" scroll-y type="list">
+<view class="page">
+  <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
     <view class="titleBox">
       库存管理系统
@@ -29,3 +30,4 @@
     </view>
   </view>
 </scroll-view>
+</view>

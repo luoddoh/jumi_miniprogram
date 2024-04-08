@@ -1,8 +1,10 @@
 <!--pages/home/home.wxml-->
-<view class="head_top_box">
+<view class="page">
+<view class="block">
+  <view class="head_top_box">
   库存管理系统
 </view>
-<van-row>
+<van-row class="list_block">
   <view class="bolckBox" bind:tap="ToProcure">
     <view>
       <van-icon class="icon" name="shopping-cart" />
@@ -28,3 +30,6 @@
     <view>支持手机扫描出库</view>
   </view>
 </van-row>
+</view>
+  
+</view>

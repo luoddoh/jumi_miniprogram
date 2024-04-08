@@ -112,7 +112,7 @@
   </view>
   <view class="button_block" >
     <view class="button" bind:tap="back"><van-icon name="revoke" />返回</view>
-    <view class="button" bind:tap="save" ><van-icon name="completed-o" />保存</view>
-    <view class="button"  bind:tap="toInspection"><van-icon name="scan"/>去验货</view>
+    <view class="button" wx:if="{{detailInfo.state<=100}}" bind:tap="save" ><van-icon name="completed-o" />保存</view>
+    <view class="button"  wx:if="{{detailInfo.state<=100}}" bind:tap="toInspection"><van-icon name="scan"/>去验货</view>
   </view>
 </view>

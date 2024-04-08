@@ -1,6 +1,17 @@
 /* pages/home/home.wxss */
+page{
+  height: 100vh;
+}
+.page{
+  padding: 80rpx 10rpx 0;
+}
+.block{
+  border-radius: 8rpx;
+  background-color: rgb(242,242,242);
+}
 .head_top_box{
-  margin: 90rpx auto;
+  margin: 0rpx auto;
+  padding: 40rpx 0;
   width: 660rpx;
   text-align: center;
   height: 80rpx;
@@ -27,6 +38,7 @@
 }
 .bolckBox:nth-child(3){
   background-color: rgb(203,164,63);
+  margin-bottom: 200rpx;
 }
 .bolckBox .icon{
   font-size: 100rpx;

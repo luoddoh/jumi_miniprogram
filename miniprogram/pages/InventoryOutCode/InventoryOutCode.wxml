@@ -1,7 +1,8 @@
 <view class="page">
   <camera  mode="scanCode" resolution="high" class="camera_block" bindscancode="successScan"></camera>
-  <view>
-    <view class="row head">
+  <view style="height: 760rpx;">
+    <scroll-view scroll-y="true" style="height: 100%;">
+      <view class="row head">
       <view class="cell cell_1">序</view>
       <view class="cell cell_2">图片</view>
       <view class="cell cell_3">商品名称</view>
@@ -23,6 +24,8 @@
     </view>
     <view class="row" wx:for="{{(8-table.length)}}">
     </view>
+    </scroll-view>
+    
   </view>
   <view class="button_block" >
     <view class="button" bind:tap="back"><van-icon name="revoke" />返回</view>

@@ -65,10 +65,11 @@ Page({
     let totalAmount = 0
     let okNum = 0
     data.forEach((item: any) => {
+      console.log(item)
       inventoryNum += item.inventoryNum
       purchaseNum += item.purchaseNum
       totalAmount = accAdd(totalAmount, item.totalAmount)
-      okNum += item.okNum
+      okNum += (item.okNum+(!item.OneOkNumber?0:item.OneOkNumber))
     })
 
     this.setData({
@@ -90,6 +91,7 @@ Page({
         acceptDataFromOpenedPage: function (data: any) {
           let table=data.data;
           that.daohuo(table)
+          that.RefreshTotal()
         },
       },
       success: function (res) {
