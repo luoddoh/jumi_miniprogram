@@ -1,5 +1,6 @@
 // pages/InventoryOutDetail/InventoryOutDetail.ts
 import { ApiGet,ApiPost } from '../../utils/request'
+const app=getApp();
 Page({
 
   /**
@@ -74,6 +75,17 @@ Page({
         totalAmount,
       }
     })
+  },
+  onInputChange(e: any) {
+    const name=app.getDateName(e,"name")
+    const index=e.currentTarget.dataset.index
+    let table:any = this.data.table
+    table[index][name]=parseInt(e.detail.value)
+    table[index].totalAmount=app.debol_mul(table[index].outNum,table[index].price)
+    this.setData({
+      "table": table
+    })
+    this.RefreshTotal()
   },
   toInspection() {
     let table = this.data.table;

@@ -6,5 +6,6 @@ interface IAppOption {
     api_url?:any
   }
   getDateName:any,
+  debol_mul:any,
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
 }

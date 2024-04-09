@@ -85,7 +85,9 @@
             <view class="cell_4 cell">{{row.unitName}}</view>
             <view class="cell_5 cell">{{row.inventoryNum}}</view>
             <view class="cell_6 cell">{{row.price}}</view>
-            <view class="cell_7 cell">{{row.checkNum}}</view>
+            <view class="cell_7 cell">
+              <input class="input_block" value="{{row.checkNum}}" data-name="checkNum" data-index="{{index}}" bindinput="onInputChange"/>
+            </view>
             <view class="cell_8 cell">{{row.totalAmount}}</view>
             <view class="cell_9 cell">{{row.differenceNum}}</view>
             <view class="cell_9 cell">{{row.differencePrice}}</view>

@@ -54,7 +54,6 @@
   min-width: 1700rpx;
 }
 .table .head .cell{
-  background-color: rgb(139, 139, 139) !important;
   font-weight: bold;
 }
 .skuImage{
@@ -108,4 +107,7 @@ font-size: 20rpx;
 }
 .button:nth-child(3){
   background-color: rgb(52, 124, 175);
+}
+.input_block{
+  height: 100%;
 }

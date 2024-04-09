@@ -1,8 +1,8 @@
 // app.ts
 App<IAppOption>({
   globalData: {
-    // api_url:'http://localhost:5005/api',
-    api_url:'https://kc.qianxingwl.com/api',
+    api_url:'http://localhost:5005/api',
+    // api_url:'https://kc.qianxingwl.com/api',
     userInfo:{}
   },
   onLaunch() {
@@ -21,5 +21,20 @@ App<IAppOption>({
   },
   getDateName(e:any,name:any){
     return e.currentTarget.dataset[name]
+  },
+  debol_mul(arg1:any, arg2:any){
+     //解决小数相乘精度问题的方法
+    let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+    try {
+      m += s1.split(".")[1].length;
+    }
+    catch (e) {
+    }
+    try {
+      m += s2.split(".")[1].length;
+    }
+    catch (e) {
+    }
+    return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
   }
 })
