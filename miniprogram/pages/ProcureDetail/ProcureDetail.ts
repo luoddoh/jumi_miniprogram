@@ -14,7 +14,8 @@ Page({
       inventoryNum: 0,
       purchaseNum: 0,
       totalAmount: 0,
-      okNum: 0
+      okNum: 0,
+      OneOkNumber:0
     }
   },
 
@@ -65,11 +66,13 @@ Page({
     let purchaseNum = 0
     let totalAmount = 0
     let okNum = 0
+    let OneOkNumber = 0
     data.forEach((item: any) => {
       inventoryNum += item.inventoryNum
       purchaseNum += item.purchaseNum
       totalAmount = accAdd(totalAmount, item.totalAmount)
       okNum += (item.okNum+(!item.OneOkNumber?0:item.OneOkNumber))
+      OneOkNumber+=!item.OneOkNumber?0:item.OneOkNumber
     })
 
     this.setData({
@@ -77,7 +80,8 @@ Page({
         inventoryNum,
         purchaseNum,
         totalAmount,
-        okNum
+        okNum,
+        OneOkNumber
       }
     })
   },
@@ -123,6 +127,10 @@ Page({
         if(row.id==ele.id){
           row.OneOkNumber=ele.scanCode.length
           row.ok_totalAmount=(row.OneOkNumber+row.okNum)*row.purchasePrice
+          if(!row.oringnoNum){
+            row.oringnoNum=row.noNum
+          }
+          row.noNum=row.oringnoNum-row.OneOkNumber<0?0:row.oringnoNum-row.OneOkNumber
         }
       })
     })
@@ -142,6 +150,9 @@ Page({
         wx.showToast({
           title:'保存成功',
           icon:'success'
+        })
+        wx.navigateBack({
+          delta:1
         })
       }else{
         wx.showToast({

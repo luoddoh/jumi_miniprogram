@@ -1,8 +1,8 @@
 // app.ts
 App<IAppOption>({
   globalData: {
-    api_url:'http://localhost:5005/api',
-    // api_url:'https://kc.qianxingwl.com/api',
+    // api_url:'http://localhost:5005/api',
+    api_url:'https://kc.qianxingwl.com/api',
     userInfo:{}
   },
   onLaunch() {

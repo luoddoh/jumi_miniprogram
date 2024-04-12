@@ -76,7 +76,8 @@
             <view class="cell_6 cell">采购价</view>
             <view class="cell_7 cell">采购量</view>
             <view class="cell_8 cell">采购总价</view>
-            <view class="cell_9 cell">到货数量</view>
+            <view class="cell_9 cell">本次到货</view>
+            <view class="cell_9 cell">已到数量</view>
             <view class="cell_10 cell">备注</view>
           </view>
           <view wx:for="{{table}}" wx:key="index" wx:for-item="row" class="table_row">
@@ -93,10 +94,15 @@
             <view class="cell_5 cell">{{row.inventoryNum}}</view>
             <view class="cell_6 cell">{{row.purchasePrice}}</view>
             <view class="cell_7 cell">
-              <input class="input_block" value="{{row.purchaseNum}}" data-name="purchaseNum" data-index="{{index}}" bindinput="onInputChange"/>
+              {{row.purchaseNum}}
             </view>
             <view class="cell_8 cell">{{row.totalAmount}}</view>
-            <view class="cell_9 cell">{{row.OneOkNumber?(row.okNum+row.OneOkNumber):row.okNum}}</view>
+            <view class="cell_9 cell">
+              <input class="input_block" value="{{row.OneOkNumber}}" data-name="OneOkNumber" data-index="{{index}}" bindinput="onInputChange"/>
+            </view>
+            <view class="cell_9 cell">
+            {{row.okNum}}
+            </view>
             <view class="cell_10 cell">{{row.remark}}</view>
           </view>
           <view class="table_row">
@@ -108,6 +114,7 @@
             <view class="cell_6 cell"></view>
             <view class="cell_7 cell">{{Total.purchaseNum}}</view>
             <view class="cell_8 cell">{{Total.totalAmount}}</view>
+            <view class="cell_9 cell">{{Total.OneOkNumber}}</view>
             <view class="cell_9 cell">{{Total.okNum}}</view>
             <view class="cell_10 cell"></view>
           </view>
@@ -119,7 +126,7 @@
   </view>
   <view class="button_block" >
     <view class="button" bind:tap="back"><van-icon name="revoke" />返回</view>
-    <view class="button" bind:tap="save" ><van-icon name="completed-o" />保存</view>
-    <view class="button"  bind:tap="toInspection"><van-icon name="scan"/>去验货</view>
+    <view class="button" wx:if="{{detailInfo.state!=400}}" bind:tap="save" ><van-icon name="completed-o" />保存</view>
+    <view class="button"  wx:if="{{detailInfo.state!=400}}" bind:tap="toInspection"><van-icon name="scan"/>去验货</view>
   </view>
 </view>

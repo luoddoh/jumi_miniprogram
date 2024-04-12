@@ -8,8 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    oringTime:'2024-01-01 00:00',
-    endTime:'2024-04-07 00:00',
+    oringTime:'2024-01-01',
+    endTime:'2024-04-07',
     radio:'0',
     search:'',
     procureDate:[],
@@ -108,11 +108,11 @@ Page({
     });
     if(this.data.checkDateName=="oringTime"){
       this.setData({
-        oringTime:timeFormat.timeFormat(event.detail)
+        oringTime:timeFormat.timeFormat(event.detail,'yyyy-MM-dd')
       })
     }else if(this.data.checkDateName=="endTime"){
       this.setData({
-        endTime:timeFormat.timeFormat(event.detail)
+        endTime:timeFormat.timeFormat(event.detail,'yyyy-MM-dd')
       })
     }
   },
@@ -132,10 +132,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    this.setData({
-      endTime:timeFormat.timeFormat(new Date)
-    })
-    this.handleQuery()
+    
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -148,7 +145,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    this.setData({
+      endTime:timeFormat.timeFormat(new Date,'yyyy-MM-dd'),
+      page:1,
+      push_bool:true,
+      procureDate:[]
+    })
+    this.handleQuery()
   },
 
   /**

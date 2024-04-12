@@ -44,7 +44,7 @@
   padding: 10rpx;
   background-color: rgb(242, 242, 242);
   border-radius: 8rpx;
-  height: 960rpx;
+  height: 920rpx;
 }
 .table .table_row{
   display: flex;

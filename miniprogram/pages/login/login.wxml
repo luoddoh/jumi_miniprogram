@@ -3,7 +3,7 @@
   <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
     <view class="titleBox">
-      库存管理系统
+      <image class="logo" src="../../wwwroot/img/logo.png"></image>库存管理系统
     </view>
     <view class="userinfo">
       <view class="inputRow">

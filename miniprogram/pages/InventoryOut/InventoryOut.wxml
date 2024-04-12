@@ -74,6 +74,6 @@
   </view>
   <van-empty wx:if="{{empty}}" image="search" description="暂无数据" />
   <van-popup show="{{ DateShow }}" round position="bottom" custom-style="height: 40%" bind:close="onClose">
-    <van-datetime-picker type="datetime" value="{{ currentDate }}" bind:input="onInput" bind:confirm="cancel_picker" bind:cancel="cancel_picker" />
+    <van-datetime-picker type="date" value="{{ currentDate }}" bind:input="onInput" bind:confirm="cancel_picker" bind:cancel="cancel_picker" />
   </van-popup>
 </view>

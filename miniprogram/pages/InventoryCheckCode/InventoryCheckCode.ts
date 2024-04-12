@@ -20,24 +20,37 @@ Page({
     eventChannel.on('acceptDataFromOpenerPage', function (data) {
       
     })
+    that.call_scan()
+  },
+  call_scan(){
+    let that=this;
+    wx.scanCode({
+      onlyFromCamera:true,
+      scanType:['barCode'],
+      success(res){
+        let obj={
+          detail:{
+            result:res.result
+          }
+        }
+        that.successScan(obj)
+      }
+    })
   },
   async successScan(e: any) {
-    if (this.data.scanEnabled) {
-      this.setData({
-        scanEnabled: false
-      })
-      let table: any = this.data.table;
+    let table: any = this.data.table;
       let code = e.detail.result;
       console.log(code)
       if (code) {
         wx.showLoading({
           title: '处理中'
         })
-        setTimeout(async() => {
-          let code_row: any =''
+        let code_row: any =''
+        console.log('获取前：'+code_row)
           await this.getRowInfo(code).then(res=>{
             code_row=res
           })
+          console.log('获取后：'+code_row)
           if (code_row!='') {
             if (table.length > 0) {
               let index=-1;
@@ -73,18 +86,19 @@ Page({
             wx.hideLoading()
             this.setData({
               table: table,
-              scanEnabled: true
             })
-
+            wx.showToast({
+              title:'条码识别成功！',
+              icon:'success',
+              duration:300
+            })
           } else {
             wx.hideLoading()
-            this.setData({
-              scanEnabled: true
-            })
           }
-        }, 1000)
       }
-    }
+      setTimeout(()=>{
+        this.call_scan()
+      },1000)
   },
   async module() {
     return new Promise((resolve: any, reject: any) => {
@@ -97,6 +111,20 @@ Page({
           }
           if (res.cancel) {
             resolve(false)
+          }
+        }
+      })
+    })
+  },
+  async module_error() {
+    return new Promise((resolve: any, reject: any) => {
+      wx.showModal({
+        title: '提示',
+        content: '条码识别错误，请重试！',
+        showCancel:false,
+        success(res: any) {
+          if (res.confirm) {
+            resolve(true)
           }
         }
       })
@@ -136,11 +164,8 @@ Page({
             resolve(res.result)
           }
         }else{
+          await that.module_error();
           resolve('')
-          wx.showToast({
-            title: '条码识别错误，请重试！',
-            icon: 'none'
-          })
         }
       })
     })

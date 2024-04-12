@@ -119,17 +119,42 @@ Page({
     })
   },
   daohuo(data:any){
-    let oring=this.data.table;
-    oring.forEach((row:any)=>{
-      data.forEach((ele:any)=>{
-        if(row.skuId==ele.skuId){
+    let oring:any=this.data.table;
+    let add_arr:any[]=[];
+    for(let j=0;j<data.length;j++){
+      let ele:any=data[j],now_ok:any=true;
+      for(let i=0;i<oring.length;i++){
+        let row:any=oring[i];
+        if(row.skuId==ele.id){
+          now_ok=false;
           row.checkNum=ele.scanCode.length
-          row.ok_totalAmount=row.checkNum*row.price
+          row.totalAmount=row.checkNum*row.price
           row.differenceNum=row.checkNum-row.inventoryNum
           row.differencePrice=row.differenceNum*row.price
         }
-      })
-    })
+      }
+      if(now_ok){
+        console.log(ele.scanCode.length)
+        let obj={
+          skuId:ele.id,
+          checkId:this.data.id,
+          goodsName:ele.goodsName,
+          skuImage:ele.skuImage,
+          unitName:ele.unitName,
+          inventoryNum:ele.inventoryNum,
+          price:ele.price,
+          checkNum:ele.scanCode.length,
+          totalAmount:app.debol_mul(ele.scanCode.length,ele.price),
+          differenceNum:ele.scanCode.length-ele.inventoryNum,
+          differencePrice:app.debol_mul((ele.scanCode.length-ele.inventoryNum),ele.price),
+          speValueList:ele.speValueList
+        }
+        add_arr.push(obj)
+      }
+    }
+    if(add_arr!=[]){
+      oring=oring.concat(add_arr)
+    }
     this.setData({
       table:oring
     })
@@ -146,6 +171,9 @@ Page({
         wx.showToast({
           title:'保存成功',
           icon:'success'
+        })
+        wx.navigateBack({
+          delta:1
         })
       }else{
         wx.showToast({

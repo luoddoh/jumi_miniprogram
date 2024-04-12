@@ -2,7 +2,7 @@
 <view class="page">
 <view class="block">
   <view class="head_top_box">
-  库存管理系统
+    <image class="logo" src="../../wwwroot/img/logo.png"></image>库存管理系统
 </view>
 <van-row class="list_block">
   <view class="bolckBox" bind:tap="ToProcure">

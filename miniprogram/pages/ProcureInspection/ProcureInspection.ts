@@ -21,73 +21,157 @@ Page({
         oringDate: data.data
       })
     })
+    that.call_scan()
+  },
+  call_scan(){
+    let that=this;
+    wx.scanCode({
+      onlyFromCamera:true,
+      scanType:['barCode'],
+      success(res){
+        let obj={
+          detail:{
+            result:res.result
+          }
+        }
+        that.successScan(obj)
+      }
+    })
   },
   async successScan(e: any) {
-    if (this.data.scanEnabled) {
-      this.setData({
-        scanEnabled: false
+    let table: any = this.data.table;
+    let code = e.detail.result;
+    console.log(code)
+    if (code) {
+      wx.showLoading({
+        title: '处理中'
       })
-      let table: any = this.data.table;
-      let code = e.detail.result;
-      console.log(code)
-      if (code) {
-        wx.showLoading({
-          title: '处理中'
-        })
-        setTimeout(async() => {
-          let code_row: any = this.getRowInfo(code)
-          if (code_row) {
-            if (table.length > 0) {
-              let index=-1;
-              for (let i = 0; i < table.length; i++) {
-                let row: any = table[i]
-                if (code_row.id == row.id) {
-                  index=i;
-                }
+      let code_row: any = this.getRowInfo(code)
+        if (code_row) {
+          if (table.length > 0) {
+            let index=-1;
+            for (let i = 0; i < table.length; i++) {
+              let row: any = table[i]
+              if (code_row.id == row.id) {
+                index=i;
               }
-              if(index!=-1){
-                let row: any = table[index]
-                let add_scan = true
-                  for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
-                    if (row.scanCode[j] == code) {
-                      await this.module().then((res: any) => {
-                        if (!res) {
-                          add_scan = false
-                        }
-                      })
-                    }
-                  }
-                  if (add_scan) {
-                    row.scanCode.push(code)
-                  }
-              }else{
-                code_row.scanCode = [code]
-              table.push(code_row)
-              }
-            } else {
-              code_row.scanCode = [code]
-              table.push(code_row)
             }
-            wx.hideLoading()
-            this.setData({
-              table: table,
-              scanEnabled: true
-            })
-
+            if(index!=-1){
+              let row: any = table[index]
+              let add_scan = true
+                for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
+                  if (row.scanCode[j] == code) {
+                    await this.module().then((res: any) => {
+                      if (!res) {
+                        add_scan = false
+                      }
+                    })
+                  }
+                }
+                if (add_scan) {
+                  row.scanCode.push(code)
+                }
+            }else{
+              code_row.scanCode = [code]
+            table.push(code_row)
+            }
           } else {
-            wx.hideLoading()
-            this.setData({
-              scanEnabled: true
-            })
-            wx.showToast({
-              title: '条码识别错误，请重试！',
-              icon: 'none'
-            })
+            code_row.scanCode = [code]
+            table.push(code_row)
           }
-        }, 1000)
-      }
+          wx.hideLoading()
+          this.setData({
+            table: table,
+            scanEnabled: true
+          })
+          wx.showToast({
+            title:'识别成功！',
+            icon:'success',
+            duration:500
+          })
+        } else {
+          wx.hideLoading()
+          this.setData({
+            scanEnabled: true
+          })
+          await this.module_error()
+          // wx.showToast({
+          //   title: '条码识别错误，请重试！',
+          //   icon: 'none'
+          // })
+        }
     }
+    setTimeout(()=>{
+      this.call_scan()
+    },800)
+    
   },
+  // async successScan(e: any) {
+  //   if (this.data.scanEnabled) {
+  //     this.setData({
+  //       scanEnabled: false
+  //     })
+  //     let table: any = this.data.table;
+  //     let code = e.detail.result;
+  //     console.log(code)
+  //     if (code) {
+  //       wx.showLoading({
+  //         title: '处理中'
+  //       })
+  //       setTimeout(async() => {
+  //         let code_row: any = this.getRowInfo(code)
+  //         if (code_row) {
+  //           if (table.length > 0) {
+  //             let index=-1;
+  //             for (let i = 0; i < table.length; i++) {
+  //               let row: any = table[i]
+  //               if (code_row.id == row.id) {
+  //                 index=i;
+  //               }
+  //             }
+  //             if(index!=-1){
+  //               let row: any = table[index]
+  //               let add_scan = true
+  //                 for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
+  //                   if (row.scanCode[j] == code) {
+  //                     await this.module().then((res: any) => {
+  //                       if (!res) {
+  //                         add_scan = false
+  //                       }
+  //                     })
+  //                   }
+  //                 }
+  //                 if (add_scan) {
+  //                   row.scanCode.push(code)
+  //                 }
+  //             }else{
+  //               code_row.scanCode = [code]
+  //             table.push(code_row)
+  //             }
+  //           } else {
+  //             code_row.scanCode = [code]
+  //             table.push(code_row)
+  //           }
+  //           wx.hideLoading()
+  //           this.setData({
+  //             table: table,
+  //             scanEnabled: true
+  //           })
+
+  //         } else {
+  //           wx.hideLoading()
+  //           this.setData({
+  //             scanEnabled: true
+  //           })
+  //           wx.showToast({
+  //             title: '条码识别错误，请重试！',
+  //             icon: 'none'
+  //           })
+  //         }
+  //       }, 1000)
+  //     }
+  //   }
+  // },
   async module() {
     return new Promise((resolve: any, reject: any) => {
       wx.showModal({
@@ -99,6 +183,20 @@ Page({
           }
           if (res.cancel) {
             resolve(false)
+          }
+        }
+      })
+    })
+  },
+  async module_error() {
+    return new Promise((resolve: any, reject: any) => {
+      wx.showModal({
+        title: '提示',
+        content: '条码识别错误，请重试！',
+        showCancel:false,
+        success(res: any) {
+          if (res.confirm) {
+            resolve(true)
           }
         }
       })

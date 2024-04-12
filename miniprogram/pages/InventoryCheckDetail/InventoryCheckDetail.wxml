@@ -83,7 +83,7 @@
                 </label>
             </view>
             <view class="cell_4 cell">{{row.unitName}}</view>
-            <view class="cell_5 cell">{{row.inventoryNum}}</view>
+            <view class="cell_5 cell">{{row.inventoryNum?row.inventoryNum:0}}</view>
             <view class="cell_6 cell">{{row.price}}</view>
             <view class="cell_7 cell">
               <input class="input_block" value="{{row.checkNum}}" data-name="checkNum" data-index="{{index}}" bindinput="onInputChange"/>
@@ -91,7 +91,7 @@
             <view class="cell_8 cell">{{row.totalAmount}}</view>
             <view class="cell_9 cell">{{row.differenceNum}}</view>
             <view class="cell_9 cell">{{row.differencePrice}}</view>
-            <view class="cell_10 cell">{{row.remark}}</view>
+            <view class="cell_10 cell">{{row.remark?row.remark:''}}</view>
           </view>
           <view class="table_row">
             <view class="cell_1 cell"></view>
@@ -107,14 +107,12 @@
             <view class="cell_10 cell"></view>
           </view>
         </view>
-
       </scroll-view>
     </scroll-view>
-
   </view>
   <view class="button_block" >
     <view class="button" bind:tap="back"><van-icon name="revoke" />返回</view>
     <view class="button" wx:if="{{detailInfo.state<=100}}" bind:tap="save" ><van-icon name="completed-o" />保存</view>
-    <view class="button"  wx:if="{{detailInfo.state<=100}}" bind:tap="toInspection"><van-icon name="scan"/>去验货</view>
+    <view class="button"  wx:if="{{detailInfo.state<=100}}" bind:tap="toInspection"><van-icon name="scan"/>去盘点</view>
   </view>
 </view>
