@@ -73,8 +73,8 @@
             <view class="cell_4 cell">单位</view>
             <view class="cell_5 cell">库存量</view>
             <view class="cell_6 cell">出库数</view>
-            <view class="cell_7 cell">价格</view>
-            <view class="cell_8 cell">出库金额</view>
+            <!-- <view class="cell_7 cell">价格</view> -->
+            <!-- <view class="cell_8 cell">出库金额</view> -->
             <view class="cell_10 cell">备注</view>
           </view>
           <view wx:for="{{table}}" wx:key="index" wx:for-item="row" class="table_row">
@@ -92,8 +92,8 @@
             <view class="cell_6 cell">
               <input class="input_block" value="{{row.outNum}}" data-name="outNum" data-index="{{index}}" bindinput="onInputChange"/>
             </view>
-            <view class="cell_7 cell">{{row.price}}</view>
-            <view class="cell_8 cell">{{row.totalAmount}}</view>
+            <!-- <view class="cell_7 cell">{{row.price}}</view> -->
+            <!-- <view class="cell_8 cell">{{row.totalAmount}}</view> -->
             <view class="cell_10 cell">{{row.remark?row.remark:''}}</view>
           </view>
           <view class="table_row">
@@ -103,8 +103,8 @@
             <view class="cell_4 cell"></view>
             <view class="cell_5 cell">{{Total.inventoryNum}}</view>
             <view class="cell_6 cell">{{Total.outNum}}</view>
-            <view class="cell_7 cell"></view>
-            <view class="cell_8 cell">{{Total.totalAmount}}</view>
+            <!-- <view class="cell_7 cell"></view> -->
+            <!-- <view class="cell_8 cell">{{Total.totalAmount}}</view> -->
             <view class="cell_10 cell"></view>
           </view>
         </view>

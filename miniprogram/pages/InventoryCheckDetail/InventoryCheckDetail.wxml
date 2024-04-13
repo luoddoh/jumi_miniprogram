@@ -65,11 +65,11 @@
             <view class="cell_3 cell">商品规格</view>
             <view class="cell_4 cell">单位</view>
             <view class="cell_5 cell">库存量</view>
-            <view class="cell_6 cell">成本价</view>
+            <!-- <view class="cell_6 cell">成本价</view> -->
             <view class="cell_7 cell">盘点数</view>
-            <view class="cell_8 cell">盘点金额</view>
+            <!-- <view class="cell_8 cell">盘点金额</view> -->
             <view class="cell_9 cell">差异数</view>
-            <view class="cell_9 cell">差金额</view>
+            <!-- <view class="cell_9 cell">差金额</view> -->
             <view class="cell_10 cell">备注</view>
           </view>
           <view wx:for="{{table}}" wx:key="index" wx:for-item="row" class="table_row">
@@ -84,13 +84,13 @@
             </view>
             <view class="cell_4 cell">{{row.unitName}}</view>
             <view class="cell_5 cell">{{row.inventoryNum?row.inventoryNum:0}}</view>
-            <view class="cell_6 cell">{{row.price}}</view>
+            <!-- <view class="cell_6 cell">{{row.price}}</view> -->
             <view class="cell_7 cell">
               <input class="input_block" value="{{row.checkNum}}" data-name="checkNum" data-index="{{index}}" bindinput="onInputChange"/>
             </view>
-            <view class="cell_8 cell">{{row.totalAmount}}</view>
+            <!-- <view class="cell_8 cell">{{row.totalAmount}}</view> -->
             <view class="cell_9 cell">{{row.differenceNum}}</view>
-            <view class="cell_9 cell">{{row.differencePrice}}</view>
+            <!-- <view class="cell_9 cell">{{row.differencePrice}}</view> -->
             <view class="cell_10 cell">{{row.remark?row.remark:''}}</view>
           </view>
           <view class="table_row">
@@ -99,11 +99,11 @@
             <view class="cell_3 cell"></view>
             <view class="cell_4 cell"></view>
             <view class="cell_5 cell">{{Total.inventoryNum}}</view>
-            <view class="cell_6 cell"></view>
+            <!-- <view class="cell_6 cell"></view> -->
             <view class="cell_7 cell">{{Total.checkNum}}</view>
-            <view class="cell_8 cell">{{Total.totalAmount}}</view>
+            <!-- <view class="cell_8 cell">{{Total.totalAmount}}</view> -->
             <view class="cell_9 cell">{{Total.differenceNum}}</view>
-            <view class="cell_9 cell">{{Total.differencePrice}}</view>
+            <!-- <view class="cell_9 cell">{{Total.differencePrice}}</view> -->
             <view class="cell_10 cell"></view>
           </view>
         </view>
