@@ -124,8 +124,11 @@ Page({
     let oring=this.data.table;
     oring.forEach((row:any)=>{
       data.forEach((ele:any)=>{
+        let okCodeList:any=JSON.parse(row.okCodeList)
+        let oklist=okCodeList?okCodeList.concat(ele.scanCode):ele.scanCode
         if(row.id==ele.id){
           row.OneOkNumber=ele.scanCode.length
+          row.okCodeList=JSON.stringify(oklist)
           row.ok_totalAmount=(row.OneOkNumber+row.okNum)*row.purchasePrice
           if(!row.oringnoNum){
             row.oringnoNum=row.noNum

@@ -46,49 +46,58 @@ Page({
       wx.showLoading({
         title: '处理中'
       })
-      let code_row: any = this.getRowInfo(code)
+      let code_row: any =await this.getRowInfo(code)
         if (code_row) {
-          if (table.length > 0) {
-            let index=-1;
-            for (let i = 0; i < table.length; i++) {
-              let row: any = table[i]
-              if (code_row.id == row.id) {
-                index=i;
+          let push_ok:any=true;
+          await this.getRowbool(code).then(res=>{
+              push_ok=res
+          })
+          if(push_ok){
+            if (table.length > 0) {
+              let index=-1;
+              for (let i = 0; i < table.length; i++) {
+                let row: any = table[i]
+                if (code_row.id == row.id) {
+                  index=i;
+                }
               }
-            }
-            if(index!=-1){
-              let row: any = table[index]
-              let add_scan = true
-                for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
-                  if (row.scanCode[j] == code) {
-                    await this.module().then((res: any) => {
-                      if (!res) {
-                        add_scan = false
-                      }
-                    })
+              if(index!=-1){
+                let row: any = table[index]
+                let add_scan = true
+                  for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
+                    if (row.scanCode[j] == code) {
+                      await this.module().then((res: any) => {
+                        if (!res) {
+                          add_scan = false
+                        }
+                      })
+                    }
                   }
-                }
-                if (add_scan) {
-                  row.scanCode.push(code)
-                }
-            }else{
+                  if (add_scan) {
+                    row.scanCode.push(code)
+                  }
+              }else{
+                code_row.scanCode = [code]
+              table.push(code_row)
+              }
+            } else {
               code_row.scanCode = [code]
-            table.push(code_row)
+              table.push(code_row)
             }
-          } else {
-            code_row.scanCode = [code]
-            table.push(code_row)
+            wx.hideLoading()
+            this.setData({
+              table: table,
+              scanEnabled: true
+            })
+            wx.showToast({
+              title:'识别成功！',
+              icon:'success',
+              duration:500
+            })
+          }else{
+            wx.hideLoading()
           }
-          wx.hideLoading()
-          this.setData({
-            table: table,
-            scanEnabled: true
-          })
-          wx.showToast({
-            title:'识别成功！',
-            icon:'success',
-            duration:500
-          })
+          
         } else {
           wx.hideLoading()
           this.setData({
@@ -172,11 +181,11 @@ Page({
   //     }
   //   }
   // },
-  async module() {
+  async module(text?:any) {
     return new Promise((resolve: any, reject: any) => {
       wx.showModal({
         title: '提示',
-        content: '重复扫码是否确定添加？',
+        content: text?text:'重复扫码是否确定添加？',
         success(res: any) {
           if (res.confirm) {
             resolve(true)
@@ -202,7 +211,7 @@ Page({
       })
     })
   },
-  getRowInfo(code: any) {
+   getRowInfo(code: any) {
     let oring: any = this.data.oringDate;
     let add_item: any;
     let oring_ok = false
@@ -217,6 +226,33 @@ Page({
       }
     }
     return add_item
+  },
+  async getRowbool(code: any) {
+    let that=this;
+    let oring: any = this.data.oringDate;
+    return new Promise(async (resolve: any, reject: any)=>{
+      let result=true;
+      let oring_ok = false
+      for (let j = 0; (j < oring.length && !oring_ok); j++) {
+        let OkCodeList = JSON.parse(oring[j].okCodeList)
+        let show_ok=false
+        if(OkCodeList){
+          for (let i = 0; (i < OkCodeList.length && !show_ok); i++) {
+            if (OkCodeList[i] == code) {
+              await that.module("该条码已入库是否继续？").then(res=>{
+                if(!res){
+                  result=false
+                }
+              })
+              show_ok = true
+              oring_ok=true
+            }
+          }
+        }
+      }
+      resolve(result)
+    })
+    
   },
   clearData() {
     this.setData({
