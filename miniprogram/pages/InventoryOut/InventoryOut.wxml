@@ -68,6 +68,12 @@
             <view class="cell_value">{{formatDate.timeFormat(item.outTime,'yyyy-MM-dd')}}</view>
           </view>
         </view>
+        <view class="li_row">
+          <view class="form_item">
+            <view class="cell_label">备注：</view>
+            <view class="cell_value">{{item.remark}}</view>
+          </view>
+        </view>
       </view>
     </scroll-view>
 

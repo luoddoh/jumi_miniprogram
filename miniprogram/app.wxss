@@ -37,3 +37,7 @@
 .code_table .row .cell_4{
   width: 260rpx;
 }
+.scan_titel{
+  text-align: center;
+  padding: 110rpx 0 30rpx;
+}
