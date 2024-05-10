@@ -6,7 +6,7 @@ page {
   
 }
 .page{
-  padding: 80rpx 10rpx 0 ;
+  padding: 0rpx 10rpx 0 ;
 }
 .titleBox {
   color: rgb(89, 27, 183);
@@ -24,7 +24,7 @@ page {
 .scrollarea {
   flex: 1;
   overflow-y: hidden;
-  
+  height: 100vh;
 }
 .container{
   background-color: rgba(242, 242, 242);
@@ -34,7 +34,7 @@ page {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 200rpx 0 320rpx;
+  padding: 250rpx 0 160rpx 0;
   box-sizing: border-box;
 }
 .userinfo {
@@ -59,7 +59,7 @@ page {
 }
 
 .usermotto {
-  margin-top: 200px;
+  margin-top: 130rpx;
 }
 
 .inputRow {

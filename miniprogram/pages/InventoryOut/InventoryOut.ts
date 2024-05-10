@@ -1,4 +1,4 @@
-// pages/InventoryOut/InventoryOut.ts
+
 import {ApiPost} from '../../utils/request'
 import timeFormat from '../../utils/formatDate'
 const app=getApp();
@@ -19,7 +19,7 @@ Page({
     page:1,
     pageSize:10,
     search_bool:false,
-
+    price_show:false,
 
     minDate: '',
     maxDate: '',
@@ -132,7 +132,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    
+    this.setData({
+      price_show:app.Power('PriceShow')
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -145,7 +147,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    let now=new Date()
+    let oringTime=timeFormat.timeFormat(now.setDate(now.getDate()-7),'yyyy-MM-dd')
     this.setData({
+      oringTime,
       endTime:timeFormat.timeFormat(new Date,'yyyy-MM-dd'),
       page:1,
       push_bool:true,

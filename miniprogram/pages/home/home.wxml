@@ -29,6 +29,14 @@
     <view>订单备货，备货出库</view>
     <view>支持手机扫描出库</view>
   </view>
+  <view class="bolckBox" bind:tap="ToInventoryInput">
+    <view>
+      <van-icon class="icon" name="back-top" />
+    </view>
+    <view class="title">扫码入库</view>
+    <view>订单备货，备货出库</view>
+    <view>支持手机扫描入库</view>
+  </view>
 </van-row>
 </view>
   

@@ -1,7 +1,7 @@
 <view class="page">
   <view class="scan_titel">扫码信息</view>
   <!-- <camera  mode="scanCode" resolution="high" class="camera_block" bindscancode="successScan"></camera> -->
-  <view style="height: 1220rpx;" class="code_table">
+  <view  class="code_table phone">
     <scroll-view scroll-y="true" style="height: 100%;">
       <view class="row head">
       <view class="cell cell_1">序</view>

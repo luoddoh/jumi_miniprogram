@@ -85,12 +85,20 @@ Component({
       })
     },
     getUserInfo(){
+      let that=this
       ApiGet("/sysAuth/userInfo",{}).then((res:any)=>{
         if(res.code==200){
           app.globalData.userInfo=res.result
+          that.InitPower()
         }
       })
-    }
+    },
+    InitPower(){
+      ApiGet('/flcSystemSwitch/havePower',{userId:app.globalData.userInfo.id})
+      .then((res:any)=>{
+        app.globalData.power=res.result
+      })
+    },
   },
   
 })

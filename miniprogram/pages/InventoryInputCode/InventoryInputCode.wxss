@@ -1,0 +1,58 @@
+/* pages/InventoryOutCode/InventoryOutCode.wxss */
+page{
+  background-color: rgba(209, 209, 209, 0.562);
+}
+.page{
+  padding: 0 10rpx;
+}
+.camera_block {
+  width: 390rpx;
+  height: 390rpx;
+  margin: 60rpx auto;
+
+}
+.row.head{
+  background-color: rgb(187, 187, 187);
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80rpx;
+  background-color: white;
+  border: 2rpx solid gray;
+  border-top: none;
+}
+.cell{
+  min-width: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+}
+.button_block {
+  margin-top: 10rpx;
+  padding-top: 20rpx;
+  border-top: 2rpx solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  display: inline-block;
+  color: white;
+  padding: 10rpx 16rpx;
+  border-radius: 8rpx;
+  background-color: rgb(252, 202, 0);
+  margin-left: 20rpx;
+  font-size: 32rpx;
+}
+
+.button:nth-child(3) {
+  background-color: rgb(7, 193, 96);
+}
+
+.button:nth-child(2) {
+  background-color: rgb(189, 49, 36);
+}

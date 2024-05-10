@@ -86,7 +86,8 @@
             <view class="cell_5 cell">{{row.inventoryNum?row.inventoryNum:0}}</view>
             <!-- <view class="cell_6 cell">{{row.price}}</view> -->
             <view class="cell_7 cell">
-              <input class="input_block" value="{{row.checkNum}}" data-name="checkNum" data-index="{{index}}" bindinput="onInputChange"/>
+              <input class="input_block" wx:if="{{update_number}}" value="{{row.checkNum}}" data-name="checkNum" data-index="{{index}}" bindinput="onInputChange"/>
+              <span wx:if="{{!update_number}}">{{row.checkNum}}</span>
             </view>
             <!-- <view class="cell_8 cell">{{row.totalAmount}}</view> -->
             <view class="cell_9 cell">{{row.differenceNum}}</view>

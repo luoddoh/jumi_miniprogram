@@ -6,12 +6,19 @@
     "pages/Procure/Procure",
     "pages/ProcureDetail/ProcureDetail",
     "pages/ProcureInspection/ProcureInspection",
+    "pages/ProcureInspectionQian/ProcureInspectionQian",
     "pages/InventoryCheck/InventoryCheck",
     "pages/InventoryCheckDetail/InventoryCheckDetail",
     "pages/InventoryCheckCode/InventoryCheckCode",
+    "pages/InventoryCheckCodeQiang/InventoryCheckCodeQiang",
     "pages/InventoryOut/InventoryOut",
     "pages/InventoryOutDetail/InventoryOutDetail",
-    "pages/InventoryOutCode/InventoryOutCode"
+    "pages/InventoryOutCode/InventoryOutCode",
+    "pages/InventoryOutCodeQiang/InventoryOutCodeQiang",
+    "pages/InventoryInput/InventoryInput",
+    "pages/InventoryInputDetail/InventoryInputDetail",
+    "pages/InventoryInputCode/InventoryInputCode",
+    "pages/InventoryInputCodeQiang/InventoryInputCodeQiang"
   ],
   "window": {
     "navigationBarTextStyle": "black",

@@ -16,7 +16,8 @@ Page({
       totalAmount: 0,
       okNum: 0,
       OneOkNumber:0
-    }
+    },
+    update_number:false
   },
 
   /**
@@ -28,7 +29,9 @@ Page({
         id: e.id
       })
     }
-
+    this.setData({
+      update_number:app.Power('InspectionChanges')
+    })
     this.initData();
   },
   initData() {
@@ -99,26 +102,66 @@ Page({
   toInspection() {
     let table = this.data.table;
     let that=this;
-    wx.navigateTo({
-      url: '/pages/ProcureInspection/ProcureInspection',
-      events: {
-        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-        acceptDataFromOpenedPage: function (data: any) {
-          let table=data.data;
-          that.daohuo(table)
-          that.RefreshTotal()
-        },
-      },
-      success: function (res) {
-        // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('acceptDataFromOpenerPage', { data: table })
+    wx.showModal({
+      title:'提示',
+      content:'请选择扫码方式！',
+      cancelText:'摄像头',
+      confirmText:'扫码枪',
+      success:(res:any)=>{
+        if (res.confirm) {
+          console.log('用户点击扫码枪')
+          wx.navigateTo({
+            url: '/pages/ProcureInspectionQian/ProcureInspectionQian',
+            events: {
+              // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+              acceptDataFromOpenedPage: function (data: any) {
+                let table=data.data;
+                that.daohuo(table)
+                that.RefreshTotal()
+              },
+            },
+            success: function (res) {
+              // 通过eventChannel向被打开页面传送数据
+              res.eventChannel.emit('acceptDataFromOpenerPage', { data: table })
+            }
+          })
+        } else if (res.cancel) {
+          console.log('用户点击摄像头')
+          wx.navigateTo({
+            url: '/pages/ProcureInspection/ProcureInspection',
+            events: {
+              // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+              acceptDataFromOpenedPage: function (data: any) {
+                let table=data.data;
+                that.daohuo(table)
+                that.RefreshTotal()
+              },
+            },
+            success: function (res) {
+              // 通过eventChannel向被打开页面传送数据
+              res.eventChannel.emit('acceptDataFromOpenerPage', { data: table })
+            }
+          })
+        }
       }
     })
+    
   },
   back() {
-    wx.navigateBack({
-      delta: 1
+    wx.showModal({
+      title:'提示',
+      content:'是否确定操作！',
+      success (res) {
+        if (res.confirm) {
+          wx.navigateBack({
+            delta: 1
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
+    
   },
   daohuo(data:any){
     let oring=this.data.table;
@@ -142,35 +185,46 @@ Page({
     })
   },
   save(){
-    wx.showLoading({
-      title:'保存中'
-    })
     let that=this
-    ApiPost('/flcProcureDetail/inspection',that.data.table)
-    .then((res:any)=>{
-      wx.hideLoading()
-      if(res.code==200){
-        wx.showToast({
-          title:'保存成功',
-          icon:'success'
-        })
-        wx.navigateBack({
-          delta:1
-        })
-      }else{
-        wx.showToast({
-          title:'保存失败',
-          icon:'error'
-        })
+    wx.showModal({
+      title:'提示',
+      content:'是否确定操作！',
+      success (res) {
+        if (res.confirm) {
+          wx.showLoading({
+            title:'保存中'
+          })
+          ApiPost('/flcProcureDetail/inspection',that.data.table)
+          .then((res:any)=>{
+            wx.hideLoading()
+            if(res.code==200){
+              wx.showToast({
+                title:'保存成功',
+                icon:'success'
+              })
+              wx.navigateBack({
+                delta:1
+              })
+            }else{
+              wx.showToast({
+                title:'保存失败',
+                icon:'error'
+              })
+            }
+          })
+          .catch(()=>{
+            wx.hideLoading()
+            wx.showToast({
+              title:'系统错误',
+              icon:'error'
+            })
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
       }
     })
-    .catch(()=>{
-      wx.hideLoading()
-      wx.showToast({
-        title:'系统错误',
-        icon:'error'
-      })
-    })
+   
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

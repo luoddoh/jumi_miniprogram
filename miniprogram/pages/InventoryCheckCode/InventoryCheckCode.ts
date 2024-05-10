@@ -1,5 +1,5 @@
 import { ApiGet } from "../../utils/request";
-
+const app=getApp()
 // pages/InventoryCheckCode/InventoryCheckCode.ts
 Page({
 
@@ -37,6 +37,7 @@ Page({
       }
     })
   },
+  
   async successScan(e: any) {
     let table: any = this.data.table;
       let code = e.detail.result;
@@ -63,8 +64,10 @@ Page({
               if(index!=-1){
                 let row: any = table[index]
                 let add_scan = true
-                  for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
+                let break_ok=true;
+                  for (let j = 0; (j < row.scanCode.length && break_ok); j++) {
                     if (row.scanCode[j] == code) {
+                      let break_ok=false;
                       await this.module().then((res: any) => {
                         if (!res) {
                           add_scan = false
@@ -102,18 +105,37 @@ Page({
   },
   async module() {
     return new Promise((resolve: any, reject: any) => {
-      wx.showModal({
-        title: '提示',
-        content: '重复扫码是否确定添加？',
-        success(res: any) {
-          if (res.confirm) {
-            resolve(true)
+      if(app.Power('CheckCodes')){
+        wx.showModal({
+          title: '提示',
+          content: '重复扫码是否确定添加？',
+          success(res: any) {
+            if (res.confirm) {
+              resolve(true)
+            }
+            if (res.cancel) {
+              resolve(false)
+            }
           }
-          if (res.cancel) {
-            resolve(false)
+        })
+      }else{
+        wx.showModal({
+          title: '提示',
+          showCancel:false,
+          content: '重复扫码不予添加！',
+          confirmText:'取消',
+          confirmColor:'#000000',
+          success(res: any) {
+            if (res.confirm) {
+              resolve(false)
+            }
+            if (res.cancel) {
+              resolve(false)
+            }
           }
-        }
-      })
+        })
+      }
+      
     })
   },
   async module_error() {
@@ -171,13 +193,35 @@ Page({
     })
   },
   clearData() {
-    this.setData({
-      table: []
+    let that=this;
+    wx.showModal({
+      title:'提示',
+      content:'是否确定操作！',
+      success (res) {
+        if (res.confirm) {
+          that.setData({
+            table: []
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
+    
   },
   back() {
-    wx.navigateBack({
-      delta: 1
+    wx.showModal({
+      title:'提示',
+      content:'是否确定操作！',
+      success (res) {
+        if (res.confirm) {
+          wx.navigateBack({
+            delta: 1
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
   },
   ok() {

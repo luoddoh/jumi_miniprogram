@@ -45,7 +45,7 @@
           </view>
           <view class="form_item">
             <view class="cell_label">差异金额：</view>
-            <view class="cell_value">{{item.differencePrice}}</view>
+            <view class="cell_value">{{price_show?item.differencePrice:'********'}}</view>
           </view>
         </view>
         <view class="li_row">

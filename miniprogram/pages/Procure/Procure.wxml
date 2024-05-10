@@ -45,7 +45,7 @@
           </view>
           <view class="form_item">
             <view class="cell_label">采购金额：</view>
-            <view class="cell_value">{{item.totalAmount}}</view>
+            <view class="cell_value">{{price_show?item.totalAmount:'********'}}</view>
           </view>
         </view>
         <view class="li_row">

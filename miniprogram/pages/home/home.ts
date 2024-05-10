@@ -1,12 +1,14 @@
 // pages/home/home.ts
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    
   },
+  
   ToProcure(){
     wx.navigateTo({
       url:'/pages/Procure/Procure'
@@ -22,11 +24,15 @@ Page({
       url:'/pages/InventoryOut/InventoryOut'
     })
   },
+  ToInventoryInput(){
+    wx.navigateTo({
+      url:'/pages/InventoryInput/InventoryInput'
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-
   },
 
   /**

@@ -1,4 +1,17 @@
 /**app.wxss**/
+page{
+  height: 100vh;
+}
+.page{
+  height: 99vh;
+}
+.content_block{
+  font-size: 32rpx !important;
+  height: 1140rpx !important;
+}
+.form_item .cell_label{
+  width: 160rpx !important;
+}
 .skuImage{
   width: 100%;
   height: 100%;
@@ -19,8 +32,21 @@
   align-items: center;
   justify-content: center;
 }
+.table_row:not(.head) .cell_3{
+  line-height: 40rpx !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.code_table{
+  height: 1000rpx;
+  border-top: 2rpx solid gray;
+}
+.code_table.phone{
+  height: 1140rpx;
+}
 .code_table .row{
-  height: 120rpx !important;
+  height: 110rpx !important;
 }
 .code_table .row .cell{
   line-height: 40rpx;

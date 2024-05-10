@@ -102,7 +102,8 @@
             </view>
             <!-- <view class="cell_8 cell">{{row.totalAmount}}</view> -->
             <view class="cell_9 cell">
-              <input class="input_block" value="{{row.OneOkNumber}}" data-name="OneOkNumber" data-index="{{index}}" bindinput="onInputChange"/>
+              <input class="input_block" wx:if="{{update_number}}" value="{{row.OneOkNumber}}" data-name="OneOkNumber" data-index="{{index}}" bindinput="onInputChange"/>
+              <span wx:if="{{!update_number}}">{{row.OneOkNumber}}</span>
             </view>
             <view class="cell_9 cell">
             {{row.okNum}}
