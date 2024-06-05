@@ -14,7 +14,8 @@ Page({
       checkNum: 0,
       totalAmount: 0,
       differenceNum: 0,
-      differencePrice: 0
+      differencePrice: 0,
+      oneCheckNum:0
     },
     update_number:false
   },
@@ -69,9 +70,11 @@ Page({
     let totalAmount = 0
     let differenceNum = 0
     let differencePrice=0
+    let oneCheckNum=0
     data.forEach((item: any) => {
       inventoryNum += item.inventoryNum
       checkNum += item.checkNum
+      oneCheckNum+=item.oneCheckNum
       totalAmount = accAdd(totalAmount, item.totalAmount)
       differenceNum += item.differenceNum
       differencePrice=accAdd(differencePrice, item.differencePrice)
@@ -83,7 +86,8 @@ Page({
         checkNum,
         totalAmount,
         differenceNum,
-        differencePrice
+        differencePrice,
+        oneCheckNum
       }
     })
   },
@@ -169,9 +173,9 @@ Page({
         let row:any=oring[i];
         if(row.skuId==ele.id){
           now_ok=false;
-          row.checkNum=ele.scanCode.length
-          row.totalAmount=row.checkNum*row.price
-          row.differenceNum=row.checkNum-row.inventoryNum
+          row.oneCheckNum=ele.scanCode.length
+          row.oneCodeList=JSON.stringify(ele.scanCode)
+          row.differenceNum=(row.checkNum+row.oneCheckNum)-row.inventoryNum
           row.differencePrice=row.differenceNum*row.price
         }
       }
@@ -185,7 +189,9 @@ Page({
           unitName:ele.unitName,
           inventoryNum:ele.inventoryNum,
           price:ele.price,
-          checkNum:ele.scanCode.length,
+          checkNum:0,
+          oneCheckNum:ele.scanCode.length,
+          oneCodeList:JSON.stringify(ele.scanCode),
           totalAmount:app.debol_mul(ele.scanCode.length,ele.price),
           differenceNum:ele.scanCode.length-ele.inventoryNum,
           differencePrice:app.debol_mul((ele.scanCode.length-ele.inventoryNum),ele.price),
@@ -212,7 +218,7 @@ Page({
             title:'保存中'
           })
           
-          ApiPost('/flcInventoryCheckDetail/update',that.data.table)
+          ApiPost('/flcInventoryCheckDetail/update_mini',that.data.table)
           .then((res:any)=>{
             wx.hideLoading()
             if(res.code==200){

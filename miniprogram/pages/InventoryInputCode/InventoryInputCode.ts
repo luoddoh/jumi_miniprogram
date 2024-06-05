@@ -8,6 +8,7 @@ Page({
    */
   data: {
     table: [],
+    oringDate:[],
     scanEnabled: true
   },
 
@@ -18,77 +19,12 @@ Page({
     let that = this;
     const eventChannel = this.getOpenerEventChannel()
     eventChannel.on('acceptDataFromOpenerPage', function (data) {
-      
+      that.setData({
+        oringDate:data.data
+      })
     })
     that.call_scan()
   },
-  // async successScan(e: any) {
-  //   if (this.data.scanEnabled) {
-  //     this.setData({
-  //       scanEnabled: false
-  //     })
-  //     let table: any = this.data.table;
-  //     let code = e.detail.result;
-  //     console.log(code)
-  //     if (code) {
-  //       wx.showLoading({
-  //         title: '处理中'
-  //       })
-  //       setTimeout(async() => {
-  //         console.log("获取前")
-  //         let code_row: any = ''
-  //         await this.getRowInfo(code).then(res=>{
-  //           code_row=res
-  //         })
-  //         console.log("获取后："+code_row)
-  //         if (code_row!='') {
-  //           if (table.length > 0) {
-  //             let index=-1;
-  //             for (let i = 0; i < table.length; i++) {
-  //               let row: any = table[i]
-  //               if (code_row.id == row.id) {
-  //                 index=i;
-  //               }
-  //             }
-  //             if(index!=-1){
-  //               let row: any = table[index]
-  //               let add_scan = true
-  //                 for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
-  //                   if (row.scanCode[j] == code) {
-  //                     await this.module().then((res: any) => {
-  //                       if (!res) {
-  //                         add_scan = false
-  //                       }
-  //                     })
-  //                   }
-  //                 }
-  //                 if (add_scan) {
-  //                   row.scanCode.push(code)
-  //                 }
-  //             }else{
-  //               code_row.scanCode = [code]
-  //             table.push(code_row)
-  //             }
-  //           } else {
-  //             code_row.scanCode = [code]
-  //             table.push(code_row)
-  //           }
-  //           wx.hideLoading()
-  //           this.setData({
-  //             table: table,
-  //             scanEnabled: true
-  //           })
-
-  //         } else {
-  //           wx.hideLoading()
-  //           this.setData({
-  //             scanEnabled: true
-  //           })
-  //         }
-  //       }, 1000)
-  //     }
-  //   }
-  // },
   call_scan(){
     let that=this;
     wx.scanCode({
@@ -103,6 +39,15 @@ Page({
         that.successScan(obj)
       }
     })
+  },
+  JudgeRepeat(code:any){
+    let data:any=this.data.oringDate
+    for(let i=0;i<data.length;i++){
+      if(data[i].okCodeList&&data[i].okCodeList.includes(code)){
+        return true
+      }
+    }
+    return false
   },
   async successScan(e: any) {
     let table: any = this.data.table;
@@ -132,7 +77,7 @@ Page({
                 let add_scan = true;
                 let break_ok=true;
                   for (let j = 0; (j < row.scanCode.length &&break_ok); j++) {
-                    if (row.scanCode[j] == code) {
+                    if (row.scanCode[j] == code||this.JudgeRepeat(code)) {
                       break_ok=false
                       await this.module().then((res: any) => {
                         if (!res) {
@@ -145,12 +90,32 @@ Page({
                     row.scanCode.push(code)
                   }
               }else{
-                code_row.scanCode = [code]
-              table.push(code_row)
+                let add_scan=true
+                if(this.JudgeRepeat(code)){
+                  await this.module().then((res: any) => {
+                    if (!res) {
+                      add_scan = false
+                    }
+                  })
+                }
+                if(add_scan){
+                  code_row.scanCode = [code]
+                  table.push(code_row)
+                }
               }
             } else {
-              code_row.scanCode = [code]
-              table.push(code_row)
+              let add_scan=true
+                if(this.JudgeRepeat(code)){
+                  await this.module().then((res: any) => {
+                    if (!res) {
+                      add_scan = false
+                    }
+                  })
+                }
+                if(add_scan){
+                  code_row.scanCode = [code]
+                  table.push(code_row)
+                }
             }
             wx.hideLoading()
             this.setData({

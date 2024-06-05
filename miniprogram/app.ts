@@ -3,6 +3,8 @@ App<IAppOption>({
   globalData: {
     // api_url: 'http://localhost:5005/api',
     api_url:'https://kc.qianxingwl.com/api',
+
+    // api_url:'http://116.62.114.131:8056/api',
     userInfo: {},
     power: [],
 

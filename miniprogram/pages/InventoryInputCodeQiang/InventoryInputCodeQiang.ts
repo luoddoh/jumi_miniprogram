@@ -8,6 +8,7 @@ Page({
    */
   data: {
     table: [],
+    oringDate:[],
     scanEnabled: true,
     input_code:'',
     ok:true,
@@ -22,7 +23,9 @@ Page({
     let that = this;
     const eventChannel = this.getOpenerEventChannel()
     eventChannel.on('acceptDataFromOpenerPage', function (data) {
-      
+      that.setData({
+        oringDate:data.data
+      })
     })
     // that.call_scan()
   },
@@ -34,6 +37,9 @@ Page({
   call_scan(){
     let that=this;
     if(that.data.ok){
+      that.setData({
+        ok: false
+      })
       that.successScan()
     }
   },
@@ -47,13 +53,20 @@ Page({
       focus_class:''
     })
   },
+  JudgeRepeat(code:any){
+    let data:any=this.data.oringDate
+    for(let i=0;i<data.length;i++){
+      if(data[i].okCodeList&&data[i].okCodeList.includes(code)){
+        return true
+      }
+    }
+    return false
+  },
   async successScan() {
       let table: any = this.data.table;
       let code = this.data.input_code;
+      code=code.replace(/\n/g, " ")
       console.log(code)
-      this.setData({
-        ok:false
-      })
       if (code) {
         wx.showLoading({
           title: '处理中'
@@ -78,7 +91,7 @@ Page({
                 let add_scan = true
                 let break_ok=true;
                   for (let j = 0; (j < row.scanCode.length && break_ok); j++) {
-                    if (row.scanCode[j] == code) {
+                    if (row.scanCode[j] == code||this.JudgeRepeat(code)) {
                       break_ok=false
                       await this.module().then((res: any) => {
                         if (!res) {
@@ -91,12 +104,32 @@ Page({
                     row.scanCode.push(code)
                   }
               }else{
-                code_row.scanCode = [code]
-              table.push(code_row)
+                let add_scan=true
+                if(this.JudgeRepeat(code)){
+                  await this.module().then((res: any) => {
+                    if (!res) {
+                      add_scan = false
+                    }
+                  })
+                }
+                if(add_scan){
+                  code_row.scanCode = [code]
+                  table.push(code_row)
+                }
               }
             } else {
-              code_row.scanCode = [code]
-              table.push(code_row)
+              let add_scan=true
+                if(this.JudgeRepeat(code)){
+                  await this.module().then((res: any) => {
+                    if (!res) {
+                      add_scan = false
+                    }
+                  })
+                }
+                if(add_scan){
+                  code_row.scanCode = [code]
+                  table.push(code_row)
+                }
             }
             this.setData({
               table: table,

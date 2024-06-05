@@ -14,8 +14,10 @@ Page({
       inventoryNum: 0,
       outNum: 0,
       totalAmount: 0,
+      oneOutNum:0
     },
-    update_number:false
+    update_number:false,
+    save_ok:false
   },
 
   /**
@@ -66,10 +68,12 @@ Page({
     let inventoryNum = 0
     let outNum = 0
     let totalAmount = 0
+    let oneOutNum=0
     data.forEach((item: any) => {
       inventoryNum += item.inventoryNum
       outNum += item.outNum
       totalAmount = accAdd(totalAmount, item.totalAmount)
+      oneOutNum+=item.oneOutNum
     })
 
     this.setData({
@@ -77,6 +81,7 @@ Page({
         inventoryNum,
         outNum,
         totalAmount,
+        oneOutNum
       }
     })
   },
@@ -162,12 +167,11 @@ Page({
         let row:any=oring[i];
         if(row.skuId==ele.id){
           now_ok=false;
-          row.outNum=ele.scanCode.length
-          row.totalAmount=row.outNum*row.price
+          row.oneOutNum=ele.scanCode.length
+          row.oneCodeList=JSON.stringify(ele.scanCode)
         }
       }
       if(now_ok){
-        console.log(ele.scanCode.length)
         let obj={
           skuId:ele.id,
           outId:this.data.id,
@@ -176,7 +180,9 @@ Page({
           unitName:ele.unitName,
           inventoryNum:ele.inventoryNum,
           price:ele.price,
-          outNum:ele.scanCode.length,
+          outNum:0,
+          oneOutNum:ele.scanCode.length,
+          oneCodeList:JSON.stringify(ele.scanCode),
           totalAmount:app.debol_mul(ele.scanCode.length,ele.price),
           speValueList:ele.speValueList
         }
@@ -187,6 +193,7 @@ Page({
       oring=oring.concat(add_arr)
     }
     this.setData({
+      save_ok:true,
       table:oring
     })
   },
@@ -200,7 +207,7 @@ Page({
           wx.showLoading({
             title:'保存中'
           })
-          ApiPost('/flcInventoryOutDetail/update',that.data.table)
+          ApiPost('/flcInventoryOutDetail/update_mini',that.data.table)
           .then((res:any)=>{
             wx.hideLoading()
             if(res.code==200){

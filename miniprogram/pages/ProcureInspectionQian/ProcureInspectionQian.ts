@@ -35,6 +35,9 @@ Page({
   call_scan(){
     let that=this;
     if(that.data.ok){
+      that.setData({
+        ok:false
+      })
       that.successScan()
     }
   },
@@ -51,9 +54,6 @@ Page({
   async successScan() {
     let table: any = this.data.table;
     let code = this.data.input_code.replace(/[\r\n\s]/g, "");
-    this.setData({
-      ok:false
-    })
     console.log(code)
     if (code) {
       wx.showLoading({

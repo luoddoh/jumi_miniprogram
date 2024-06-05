@@ -14,6 +14,7 @@ Page({
       inventoryNum: 0,
       inputNum: 0,
       totalAmount: 0,
+      oneInputNum:0
     },
     update_number:false
   },
@@ -66,10 +67,12 @@ Page({
     let inventoryNum = 0
     let inputNum = 0
     let totalAmount = 0
+    let oneInputNum=0
     data.forEach((item: any) => {
       inventoryNum += item.inventoryNum
       inputNum += item.inputNum
       totalAmount = accAdd(totalAmount, item.totalAmount)
+      oneInputNum+=item.oneInputNum
     })
 
     this.setData({
@@ -77,6 +80,7 @@ Page({
         inventoryNum,
         inputNum,
         totalAmount,
+        oneInputNum
       }
     })
   },
@@ -120,7 +124,7 @@ Page({
         } else if (res.cancel) {
           console.log('用户点击摄像头')
           wx.navigateTo({
-            url: '/pages/InventoryInputCode/InventoryInputCodes',
+            url: '/pages/InventoryInputCode/InventoryInputCode',
             events: {
               // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
               acceptDataFromOpenedPage: function (data: any) {
@@ -162,21 +166,23 @@ Page({
         let row:any=oring[i];
         if(row.skuId==ele.id){
           now_ok=false;
-          row.outNum=ele.scanCode.length
-          row.totalAmount=row.outNum*row.price
+          row.oneInputNum=ele.scanCode.length
+          row.oneCodeList=JSON.stringify(ele.scanCode)
         }
       }
       if(now_ok){
         console.log(ele.scanCode.length)
         let obj={
           skuId:ele.id,
-          outId:this.data.id,
+          inputId:this.data.id,
           goodsName:ele.goodsName,
           skuImage:ele.skuImage,
           unitName:ele.unitName,
           inventoryNum:ele.inventoryNum,
           price:ele.price,
-          outNum:ele.scanCode.length,
+          inputNum:0,
+          oneInputNum:ele.scanCode.length,
+          oneCodeList:JSON.stringify(ele.scanCode),
           totalAmount:app.debol_mul(ele.scanCode.length,ele.price),
           speValueList:ele.speValueList
         }
@@ -200,7 +206,7 @@ Page({
           wx.showLoading({
             title:'保存中'
           })
-          ApiPost('/flcInventoryInputDetail/update',that.data.table)
+          ApiPost('/flcInventoryInputDetail/update_mini',that.data.table)
           .then((res:any)=>{
             wx.hideLoading()
             if(res.code==200){

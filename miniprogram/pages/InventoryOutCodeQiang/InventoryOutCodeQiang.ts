@@ -1,6 +1,6 @@
 // pages/InventoryOutCode/InventoryOutCode.ts
 import { ApiGet } from "../../utils/request";
-const app=getApp()
+const app = getApp()
 Page({
 
   /**
@@ -8,11 +8,12 @@ Page({
    */
   data: {
     table: [],
+    oringDate: [],
     scanEnabled: true,
-    input_code:'',
-    ok:true,
-    focus_class:'',
-    focus:true
+    input_code: '',
+    ok: true,
+    focus_class: '',
+    focus: true
   },
 
   /**
@@ -22,7 +23,9 @@ Page({
     let that = this;
     const eventChannel = this.getOpenerEventChannel()
     eventChannel.on('acceptDataFromOpenerPage', function (data) {
-      
+      that.setData({
+        oringDate: data.data
+      })
     })
     // that.call_scan()
   },
@@ -31,93 +34,126 @@ Page({
       "input_code": e.detail.value
     })
   },
-  call_scan(){
-    let that=this;
-    if(that.data.ok){
+  call_scan() {
+    let that = this;
+    if (that.data.ok) {
+      that.setData({
+        ok: false
+      })
       that.successScan()
     }
   },
-  focus_in(){
+  focus_in() {
     this.setData({
-      focus_class:'infocus'
+      focus_class: 'infocus'
     })
   },
-  focus_no(){
+  focus_no() {
     this.setData({
-      focus_class:''
+      focus_class: ''
     })
+  },
+  JudgeRepeat(code: any) {
+    let data: any = this.data.oringDate
+    console.log(data)
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i].okCodeList,code)
+      if (data[i].okCodeList && data[i].okCodeList.includes(code)) {
+        return true
+      }
+    }
+    return false
   },
   async successScan() {
-      let table: any = this.data.table;
-      let code = this.data.input_code;
-      console.log(code)
-      this.setData({
-        ok:false
+    let table: any = this.data.table;
+    let code = this.data.input_code;
+    code=code.replace(/\n/g, " ")
+    console.log(code)
+    if (code) {
+      wx.showLoading({
+        title: '处理中'
       })
-      if (code) {
-        wx.showLoading({
-          title: '处理中'
-        })
-        let code_row: any =''
-        console.log('获取前：'+code_row)
-          await this.getRowInfo(code).then(res=>{
-            code_row=res
-          })
-          console.log('获取后：'+code_row)
-          if (code_row!='') {
-            if (table.length > 0) {
-              let index=-1;
-              for (let i = 0; i < table.length; i++) {
-                let row: any = table[i]
-                if (code_row.id == row.id) {
-                  index=i;
+      let code_row: any = ''
+      console.log('获取前：' + code_row)
+      await this.getRowInfo(code).then(res => {
+        code_row = res
+      })
+      console.log('获取后：' + code_row)
+      if (code_row != '') {
+        if (table.length > 0) {
+          let index = -1;
+          for (let i = 0; i < table.length; i++) {
+            let row: any = table[i]
+            if (code_row.id == row.id) {
+              index = i;
+            }
+          }
+          if (index != -1) {
+            let row: any = table[index]
+            let add_scan = true
+            let break_ok = true;
+            for (let j = 0; (j < row.scanCode.length && break_ok); j++) {
+              if (row.scanCode[j] == code || this.JudgeRepeat(code)) {
+                break_ok = false
+                await this.module().then((res: any) => {
+                  if (!res) {
+                    add_scan = false
+                  }
+                })
+              }
+            }
+            if (add_scan) {
+              row.scanCode.push(code)
+            }
+          } else {
+            let add_scan = true
+            if (this.JudgeRepeat(code)) {
+              await this.module().then((res: any) => {
+                if (!res) {
+                  add_scan = false
                 }
-              }
-              if(index!=-1){
-                let row: any = table[index]
-                let add_scan = true
-                let break_ok=true;
-                  for (let j = 0; (j < row.scanCode.length && break_ok); j++) {
-                    if (row.scanCode[j] == code) {
-                      break_ok=false
-                      await this.module().then((res: any) => {
-                        if (!res) {
-                          add_scan = false
-                        }
-                      })
-                    }
-                  }
-                  if (add_scan) {
-                    row.scanCode.push(code)
-                  }
-              }else{
-                code_row.scanCode = [code]
-              table.push(code_row)
-              }
-            } else {
+              })
+            }
+            if (add_scan) {
               code_row.scanCode = [code]
               table.push(code_row)
             }
-            this.setData({
-              table: table,
-            })
-            wx.showToast({
-              title:'条码识别成功！',
-              icon:'success',
-              duration:300
+          }
+        } else {
+          let add_scan = true
+          console.log("")
+          if (this.JudgeRepeat(code)) {
+            await this.module().then((res: any) => {
+              if (!res) {
+                add_scan = false
+              }
             })
           }
-          wx.hideLoading()
+          if (add_scan) {
+            code_row.scanCode = [code]
+            table.push(code_row)
+          }
+        }
+        this.setData({
+          table: table,
+        })
+        wx.showToast({
+          title: '条码识别成功！',
+          icon: 'success',
+          duration: 300
+        })
       }
-      this.setData({
-        "input_code": '',
-        "ok":true,
-        "focus":true
-      })
+      wx.hideLoading()
+    }
+    this.setData({
+      "input_code": '',
+      "ok": true,
+      "focus": true
+    })
   },
   async module() {
     return new Promise((resolve: any, reject: any) => {
-      if(app.Power('OutCodes')){
+      if (app.Power('OutCodes')) {
         wx.showModal({
           title: '提示',
           content: '重复扫码是否确定添加？',
@@ -130,13 +166,13 @@ Page({
             }
           }
         })
-      }else{
+      } else {
         wx.showModal({
           title: '提示',
-          showCancel:false,
+          showCancel: false,
           content: '重复扫码不予添加！',
-          confirmText:'取消',
-          confirmColor:'#000000',
+          confirmText: '取消',
+          confirmColor: '#000000',
           success(res: any) {
             if (res.confirm) {
               resolve(false)
@@ -147,7 +183,7 @@ Page({
           }
         })
       }
-      
+
     })
   },
   async module_error() {
@@ -155,7 +191,7 @@ Page({
       wx.showModal({
         title: '提示',
         content: '条码识别错误，请重试！',
-        showCancel:false,
+        showCancel: false,
         success(res: any) {
           if (res.confirm) {
             resolve(true)
@@ -181,23 +217,23 @@ Page({
     })
   },
   async getRowInfo(code: any) {
-    let that=this;
+    let that = this;
     return new Promise((resolve: any, reject: any) => {
-      ApiGet("/flcProcureDetail/barCodeInfoDetail",{
+      ApiGet("/flcProcureDetail/barCodeInfoDetail", {
         code
-      }).then(async (res:any)=>{
-        if(res.code==200&&res.result){
-          if(res.result.okNum<res.result.purchaseNum){
-            let ok=await that.module_code()
-            if(ok){
+      }).then(async (res: any) => {
+        if (res.code == 200 && res.result) {
+          if (res.result.okNum < res.result.purchaseNum) {
+            let ok = await that.module_code()
+            if (ok) {
               resolve(res.result)
-            }else{
+            } else {
               resolve('')
             }
-          }else{
+          } else {
             resolve(res.result)
           }
-        }else{
+        } else {
           await that.module_error();
           resolve('')
         }
@@ -205,11 +241,11 @@ Page({
     })
   },
   clearData() {
-    let that=this;
+    let that = this;
     wx.showModal({
-      title:'提示',
-      content:'是否确定操作！',
-      success (res) {
+      title: '提示',
+      content: '是否确定操作！',
+      success(res) {
         if (res.confirm) {
           that.setData({
             table: []
@@ -219,13 +255,13 @@ Page({
         }
       }
     })
-    
+
   },
   back() {
     wx.showModal({
-      title:'提示',
-      content:'是否确定操作！',
-      success (res) {
+      title: '提示',
+      content: '是否确定操作！',
+      success(res) {
         if (res.confirm) {
           wx.navigateBack({
             delta: 1

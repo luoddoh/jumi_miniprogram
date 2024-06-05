@@ -8,6 +8,7 @@ Page({
    */
   data: {
     table: [],
+    oringDate:[],
     scanEnabled: true
   },
 
@@ -18,7 +19,9 @@ Page({
     let that = this;
     const eventChannel = this.getOpenerEventChannel()
     eventChannel.on('acceptDataFromOpenerPage', function (data) {
-      
+      that.setData({
+        oringDate:data.data
+      })
     })
     that.call_scan()
   },
@@ -37,7 +40,15 @@ Page({
       }
     })
   },
-  
+  JudgeRepeat(code:any){
+    let data:any=this.data.oringDate
+    for(let i=0;i<data.length;i++){
+      if(data[i].okCodeList&&data[i].okCodeList.includes(code)){
+        return true
+      }
+    }
+    return false
+  },
   async successScan(e: any) {
     let table: any = this.data.table;
       let code = e.detail.result;
@@ -66,7 +77,7 @@ Page({
                 let add_scan = true
                 let break_ok=true;
                   for (let j = 0; (j < row.scanCode.length && break_ok); j++) {
-                    if (row.scanCode[j] == code) {
+                    if (row.scanCode[j] == code||this.JudgeRepeat(code)) {
                       let break_ok=false;
                       await this.module().then((res: any) => {
                         if (!res) {
@@ -79,12 +90,32 @@ Page({
                     row.scanCode.push(code)
                   }
               }else{
-                code_row.scanCode = [code]
-              table.push(code_row)
+                let add_scan=true
+                if(this.JudgeRepeat(code)){
+                  await this.module().then((res: any) => {
+                    if (!res) {
+                      add_scan = false
+                    }
+                  })
+                }
+                if(add_scan){
+                  code_row.scanCode = [code]
+                  table.push(code_row)
+                }
               }
             } else {
-              code_row.scanCode = [code]
-              table.push(code_row)
+              let add_scan=true
+                if(this.JudgeRepeat(code)){
+                  await this.module().then((res: any) => {
+                    if (!res) {
+                      add_scan = false
+                    }
+                  })
+                }
+                if(add_scan){
+                  code_row.scanCode = [code]
+                  table.push(code_row)
+                }
             }
             wx.hideLoading()
             this.setData({
