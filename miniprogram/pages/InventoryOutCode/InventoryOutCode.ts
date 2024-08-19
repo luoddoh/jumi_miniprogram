@@ -120,7 +120,7 @@ Page({
     let table: any = this.data.table;
     let code = e.detail.result;
     console.log(code)
-    if (code) {
+    if (code&&code.length>15) {
       wx.showLoading({
         title: '处理中'
       })
@@ -196,6 +196,8 @@ Page({
       } else {
         wx.hideLoading()
       }
+    }else{
+      await this.module_error();
     }
     setTimeout(() => {
       this.call_scan()
@@ -203,9 +205,9 @@ Page({
   },
   async module() {
     return new Promise((resolve: any, reject: any) => {
-      let b = app.Power('OutCodes')
-      console.log(b)
+      app.audio_repeat()
       if (app.Power('OutCodes')) {
+        
         wx.showModal({
           title: '提示',
           content: '重复扫码是否确定添加？',
@@ -240,6 +242,7 @@ Page({
   },
   async module_error() {
     return new Promise((resolve: any, reject: any) => {
+      app.audio_error()
       wx.showModal({
         title: '提示',
         content: '条码识别错误，请重试！',

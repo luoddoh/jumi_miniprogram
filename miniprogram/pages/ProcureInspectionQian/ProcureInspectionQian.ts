@@ -55,7 +55,7 @@ Page({
     let table: any = this.data.table;
     let code = this.data.input_code.replace(/[\r\n\s]/g, "");
     console.log(code)
-    if (code) {
+    if (code&&code.length>15) {
       wx.showLoading({
         title: '处理中'
       })
@@ -125,6 +125,8 @@ Page({
           //   icon: 'none'
           // })
         }
+    }else{
+      await this.module_error();
     }
     this.setData({
       "input_code": '',
@@ -201,6 +203,7 @@ Page({
   // },
   async module(text?:any) {
     return new Promise((resolve: any, reject: any) => {
+      app.audio_repeat()
       if(app.Power('InspectionCodes')){
         wx.showModal({
           title: '提示',
@@ -236,6 +239,7 @@ Page({
   },
   async module_error() {
     return new Promise((resolve: any, reject: any) => {
+      app.audio_error()
       wx.showModal({
         title: '提示',
         content: '条码识别错误，请重试！',

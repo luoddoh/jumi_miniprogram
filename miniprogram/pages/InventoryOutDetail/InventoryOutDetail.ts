@@ -34,27 +34,48 @@ Page({
     })
     this.initData();
   },
-  initData() {
+  async initData() {
     let that = this;
-    ApiGet("/flcInventoryOut/miniDetail", {
+    // ApiGet("/flcInventoryOut/miniDetail", {
+    //   id: that.data.id
+    // }).then((res: any) => {
+    //   if (res.code == 200) {
+    //     that.setData({
+    //       detailInfo: res.result
+    //     })
+    //   }
+    // })
+    // ApiGet("/flcInventoryOutDetail/list", {
+    //   OutId: that.data.id
+    // }).then((res: any) => {
+    //   if (res.code == 200) {
+    //     that.setData({
+    //       table: res.result
+    //     })
+    //     that.RefreshTotal()
+    //   }
+    // })
+    wx.showLoading({
+      title:"数据加载中",
+      mask:true
+    })
+    let info: any = await ApiGet("/flcInventoryOut/miniDetail", {
       id: that.data.id
-    }).then((res: any) => {
-      if (res.code == 200) {
-        that.setData({
-          detailInfo: res.result
-        })
-      }
     })
-    ApiGet("/flcInventoryOutDetail/list", {
+    if (info.code == 200) {
+      that.setData({
+        detailInfo: info.result
+      })
+    }
+    let list: any = await ApiGet("/flcInventoryOutDetail/list", {
       OutId: that.data.id
-    }).then((res: any) => {
-      if (res.code == 200) {
-        that.setData({
-          table: res.result
-        })
-        that.RefreshTotal()
-      }
     })
+    if (list.code == 200) {
+      that.setData({
+        table: list.result
+      })
+    }
+    wx.hideLoading()
   },
   RefreshTotal() {
     function accAdd(num1: any, num2: any) {

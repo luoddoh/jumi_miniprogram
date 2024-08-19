@@ -1,4 +1,5 @@
 // app.ts
+const audioCtx = wx.createWebAudioContext()
 App<IAppOption>({
   globalData: {
     // api_url: 'http://localhost:5005/api',
@@ -41,6 +42,43 @@ App<IAppOption>({
     }
     return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
   },
+  loadAudio(url:any) {
+    // return new Promise((resolve,reject) => {
+    //   wx.request({
+    //     url,
+    //     responseType: 'arraybuffer',
+    //     success: res => {
+    //       console.log('res.data', res.data)
+    //       audioCtx.decodeAudioData((res.data, (buffer:any) => {
+    //         resolve(buffer)
+    //       }, err => {
+    //         console.error('decodeAudioData fail', err)
+    //         reject()
+    //       })
+    //     },
+    //     fail: res => {
+    //       console.error('request fail', res)
+    //       reject()
+    //     }
+    //   })
+    // })
+  },
+  audio_error(){
+    //  this.loadAudio('https://kc.qianxingwl.com/Upload/audio/shibeichenggong.mp3').then((buffer:any)=>{
+    //   let source = audioCtx.createBufferSource()
+    //   source.buffer = buffer
+    //   source.connect(audioCtx.destination)
+    //   source.start()
+    // })
+  },
+  audio_repeat(){
+  //   this.loadAudio('https://kc.qianxingwl.com/Upload/audio/shibeichongfu.mp3').then((buffer:any)=>{
+  //    let source = audioCtx.createBufferSource()
+  //    source.buffer = buffer
+  //    source.connect(audioCtx.destination)
+  //    source.start()
+  //  })
+ },
   Power(code: any) {
     if (this.globalData.userInfo.id == 1300000000111 || this.globalData.userInfo.id == 1300000000101) {
       return true
