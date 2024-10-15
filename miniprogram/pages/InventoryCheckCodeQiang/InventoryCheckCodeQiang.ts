@@ -66,8 +66,7 @@ Page({
     let table: any = this.data.table;
     let code = this.data.input_code;
     code=code.replace(/\n/g, " ")
-    console.log(code)
-    if (code&&code.length>15) {
+    if (code&&code.length>14) {
       wx.showLoading({
         title: '处理中'
       })
@@ -141,14 +140,18 @@ Page({
         })
       }
       wx.hideLoading()
-    }else{
+    }else if(code){
       await this.module_error();
     }
     this.setData({
       "input_code": '',
       "ok": true,
-      "focus": true
     })
+    setTimeout(()=>{
+      this.setData({
+        "focus": true
+      })
+    },200)
   },
   async module() {
     return new Promise((resolve: any, reject: any) => {

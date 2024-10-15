@@ -2,7 +2,7 @@
 <view class="page">
   <view class="scan_titel">扫码信息</view>
   <view class="input_block {{focus_class}}">
-    <textarea class="text_block"	value="{{input_code}}" bindinput="onInputChange" bindblur="focus_no" bindfocus="focus_in" bindlinechange="call_scan" 	confirm-hold 	focus="{{focus}}" disabled="{{!ok}}" placeholder="当前条码" name="textarea"/>
+    <textarea class="text_block"	value="{{input_code}}" bindinput="onInputChange"  bindblur="focus_no" bindfocus="focus_in" bindlinechange="call_scan" confirm-hold		focus="{{focus}}" disabled="{{!ok}}"  placeholder="当前条码" name="textarea"/>
   </view>
   <view class="code_table">
     <scroll-view scroll-y="true" style="height: 100%;">

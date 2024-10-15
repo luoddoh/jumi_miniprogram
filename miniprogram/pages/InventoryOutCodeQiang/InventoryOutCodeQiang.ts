@@ -34,9 +34,9 @@ Page({
       "input_code": e.detail.value
     })
   },
-  call_scan() {
+  call_scan(event:any) {
     let that = this;
-    if (that.data.ok) {
+    if (that.data.ok&&event.detail.lineCount>1) {
       that.setData({
         ok: false
       })
@@ -68,8 +68,7 @@ Page({
     let table: any = this.data.table;
     let code = this.data.input_code;
     code=code.replace(/\n/g, " ")
-    console.log(code)
-    if (code&&code.length>15) {
+    if (code&&code.length>14) {
       wx.showLoading({
         title: '处理中'
       })
@@ -144,14 +143,21 @@ Page({
         })
       }
       wx.hideLoading()
-    }else{
+    }else if(code){
       await this.module_error();
     }
     this.setData({
       "input_code": '',
-      "ok": true,
-      "focus": true
     })
+    this.setData({
+      "ok": true,
+    })
+    setTimeout(()=>{
+      this.setData({
+        "focus": true
+      })
+    },200)
+    console.log(this.data.focus)
   },
   async module() {
     return new Promise((resolve: any, reject: any) => {

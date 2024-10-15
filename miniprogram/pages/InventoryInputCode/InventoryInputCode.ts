@@ -53,7 +53,7 @@ Page({
     let table: any = this.data.table;
       let code = e.detail.result;
       console.log(code)
-      if (code&&code.length>15) {
+      if (code&&code.length>14) {
         wx.showLoading({
           title: '处理中'
         })

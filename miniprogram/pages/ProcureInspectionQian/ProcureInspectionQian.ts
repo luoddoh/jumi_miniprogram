@@ -1,4 +1,4 @@
-const app=getApp()
+const app = getApp()
 Page({
 
   /**
@@ -7,11 +7,10 @@ Page({
   data: {
     table: [],
     oringDate: [],
-    scanEnabled: true,
-    input_code:'',
-    ok:true,
-    focus_class:'',
-    focus:true
+    input_code: '',
+    ok: true,
+    focus_class: '',
+    focus: true
   },
 
   /**
@@ -32,182 +31,117 @@ Page({
       "input_code": e.detail.value
     })
   },
-  call_scan(){
-    let that=this;
-    if(that.data.ok){
+  call_scan() {
+    let that = this;
+    if (that.data.ok) {
       that.setData({
-        ok:false
+        ok: false
       })
       that.successScan()
     }
   },
-  focus_in(){
+  focus_in() {
     this.setData({
-      focus_class:'infocus'
+      focus_class: 'infocus'
     })
   },
-  focus_no(){
+  focus_no() {
     this.setData({
-      focus_class:''
+      focus_class: ''
     })
   },
   async successScan() {
     let table: any = this.data.table;
     let code = this.data.input_code.replace(/[\r\n\s]/g, "");
-    console.log(code)
-    if (code&&code.length>15) {
+    if (code && code.length > 14) {
       wx.showLoading({
         title: '处理中'
       })
       let code_row: any = this.getRowInfo(code)
       console.log(code_row)
-        if (code_row) {
-          let push_ok:any=true;
-          await this.getRowbool(code).then(res=>{
-              push_ok=res
-          })
-          if(push_ok){
-            if (table.length > 0) {
-              let index=-1;
-              for (let i = 0; i < table.length; i++) {
-                let row: any = table[i]
-                if (code_row.id == row.id) {
-                  index=i;
+      if (code_row) {
+        let push_ok: any = true;
+        await this.getRowbool(code).then(res => {
+          push_ok = res
+        })
+        if (push_ok) {
+          if (table.length > 0) {
+            let index = -1;
+            for (let i = 0; i < table.length; i++) {
+              let row: any = table[i]
+              if (code_row.id == row.id) {
+                index = i;
+              }
+            }
+            if (index != -1) {
+              let row: any = table[index]
+              let add_scan = true
+              let break_ok = true;
+              for (let j = 0; (j < row.scanCode.length && break_ok); j++) {
+                if (row.scanCode[j] == code) {
+                  let break_ok = false;
+                  await this.module().then((res: any) => {
+                    if (!res) {
+                      add_scan = false
+                    }
+                  })
                 }
               }
-              if(index!=-1){
-                let row: any = table[index]
-                let add_scan = true
-                let break_ok=true;
-                  for (let j = 0; (j < row.scanCode.length && break_ok); j++) {
-                    if (row.scanCode[j] == code) {
-                      let break_ok=false;
-                      await this.module().then((res: any) => {
-                        if (!res) {
-                          add_scan = false
-                        }
-                      })
-                    }
-                  }
-                  if (add_scan) {
-                    row.scanCode.push(code)
-                  }
-              }else{
-                code_row.scanCode = [code]
-              table.push(code_row)
+              if (add_scan) {
+                row.scanCode.push(code)
               }
             } else {
               code_row.scanCode = [code]
               table.push(code_row)
             }
-            wx.hideLoading()
-            this.setData({
-              table: table,
-              scanEnabled: true
-            })
-            wx.showToast({
-              title:'识别成功！',
-              icon:'success',
-              duration:500
-            })
-          }else{
-            wx.hideLoading()
+          } else {
+            code_row.scanCode = [code]
+            table.push(code_row)
           }
-          
-        } else {
           wx.hideLoading()
           this.setData({
-            scanEnabled: true
+            table: table,
           })
-          await this.module_error()
-          // wx.showToast({
-          //   title: '条码识别错误，请重试！',
-          //   icon: 'none'
-          // })
+          wx.showToast({
+            title: '识别成功！',
+            icon: 'success',
+            duration: 500
+          })
+        } else {
+          wx.hideLoading()
         }
-    }else{
+
+      } else {
+        wx.hideLoading()
+        await this.module_error()
+      }
+    } else if (code) {
       await this.module_error();
     }
     this.setData({
       "input_code": '',
-      "ok":true,
-      "focus":true
+      "ok": true,
     })
-    
+    // wx.nextTick(() => {
+    //   setTimeout(() => {
+    //     this.setData({
+    //       "focus": true
+    //     })
+    //   }, 200)
+    // })
+    setTimeout(() => {
+      this.setData({
+        "focus": true
+      })
+    }, 200)
   },
-  // async successScan(e: any) {
-  //   if (this.data.scanEnabled) {
-  //     this.setData({
-  //       scanEnabled: false
-  //     })
-  //     let table: any = this.data.table;
-  //     let code = e.detail.result;
-  //     console.log(code)
-  //     if (code) {
-  //       wx.showLoading({
-  //         title: '处理中'
-  //       })
-  //       setTimeout(async() => {
-  //         let code_row: any = this.getRowInfo(code)
-  //         if (code_row) {
-  //           if (table.length > 0) {
-  //             let index=-1;
-  //             for (let i = 0; i < table.length; i++) {
-  //               let row: any = table[i]
-  //               if (code_row.id == row.id) {
-  //                 index=i;
-  //               }
-  //             }
-  //             if(index!=-1){
-  //               let row: any = table[index]
-  //               let add_scan = true
-  //                 for (let j = 0; (j < row.scanCode.length && add_scan); j++) {
-  //                   if (row.scanCode[j] == code) {
-  //                     await this.module().then((res: any) => {
-  //                       if (!res) {
-  //                         add_scan = false
-  //                       }
-  //                     })
-  //                   }
-  //                 }
-  //                 if (add_scan) {
-  //                   row.scanCode.push(code)
-  //                 }
-  //             }else{
-  //               code_row.scanCode = [code]
-  //             table.push(code_row)
-  //             }
-  //           } else {
-  //             code_row.scanCode = [code]
-  //             table.push(code_row)
-  //           }
-  //           wx.hideLoading()
-  //           this.setData({
-  //             table: table,
-  //             scanEnabled: true
-  //           })
-
-  //         } else {
-  //           wx.hideLoading()
-  //           this.setData({
-  //             scanEnabled: true
-  //           })
-  //           wx.showToast({
-  //             title: '条码识别错误，请重试！',
-  //             icon: 'none'
-  //           })
-  //         }
-  //       }, 1000)
-  //     }
-  //   }
-  // },
-  async module(text?:any) {
+  async module(text?: any) {
     return new Promise((resolve: any, reject: any) => {
       app.audio_repeat()
-      if(app.Power('InspectionCodes')){
+      if (app.Power('InspectionCodes')) {
         wx.showModal({
           title: '提示',
-          content: text?text:'重复扫码是否确定添加？',
+          content: text ? text : '重复扫码是否确定添加？',
           success(res: any) {
             if (res.confirm) {
               resolve(true)
@@ -217,13 +151,13 @@ Page({
             }
           }
         })
-      }else{
+      } else {
         wx.showModal({
           title: '提示',
-          showCancel:false,
+          showCancel: false,
           content: '重复扫码不予添加！',
-          confirmText:'取消',
-          confirmColor:'#000000',
+          confirmText: '取消',
+          confirmColor: '#000000',
           success(res: any) {
             if (res.confirm) {
               resolve(false)
@@ -234,7 +168,7 @@ Page({
           }
         })
       }
-      
+
     })
   },
   async module_error() {
@@ -243,7 +177,7 @@ Page({
       wx.showModal({
         title: '提示',
         content: '条码识别错误，请重试！',
-        showCancel:false,
+        showCancel: false,
         success(res: any) {
           if (res.confirm) {
             resolve(true)
@@ -252,7 +186,7 @@ Page({
       })
     })
   },
-   getRowInfo(code: any) {
+  getRowInfo(code: any) {
     let oring: any = this.data.oringDate;
     let add_item: any;
     let oring_ok = false
@@ -269,38 +203,38 @@ Page({
     return add_item
   },
   async getRowbool(code: any) {
-    let that=this;
+    let that = this;
     let oring: any = this.data.oringDate;
-    return new Promise(async (resolve: any, reject: any)=>{
-      let result=true;
+    return new Promise(async (resolve: any, reject: any) => {
+      let result = true;
       let oring_ok = false
       for (let j = 0; (j < oring.length && !oring_ok); j++) {
         let OkCodeList = JSON.parse(oring[j].okCodeList)
-        let show_ok=false
-        if(OkCodeList){
+        let show_ok = false
+        if (OkCodeList) {
           for (let i = 0; (i < OkCodeList.length && !show_ok); i++) {
             if (OkCodeList[i] == code) {
-              await that.module("该条码已入库是否继续？").then(res=>{
-                if(!res){
-                  result=false
+              await that.module("该条码已入库是否继续？").then(res => {
+                if (!res) {
+                  result = false
                 }
               })
               show_ok = true
-              oring_ok=true
+              oring_ok = true
             }
           }
         }
       }
       resolve(result)
     })
-    
+
   },
   clearData() {
-    let that=this;
+    let that = this;
     wx.showModal({
-      title:'提示',
-      content:'是否确定操作！',
-      success (res) {
+      title: '提示',
+      content: '是否确定操作！',
+      success(res) {
         if (res.confirm) {
           that.setData({
             table: []
@@ -310,13 +244,13 @@ Page({
         }
       }
     })
-    
+
   },
   back() {
     wx.showModal({
-      title:'提示',
-      content:'是否确定操作！',
-      success (res) {
+      title: '提示',
+      content: '是否确定操作！',
+      success(res) {
         if (res.confirm) {
           wx.navigateBack({
             delta: 1
